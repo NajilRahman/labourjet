@@ -47,7 +47,7 @@ function LandingHome() {
     }, [render])
 
     return (
-        <div id='maindiv' className='w-100  text-center' style={{ height: '95vh' }}>
+        <div id='maindiv' className='w-100  text-center' style={{ height: '90vh' }}>
             <Row className='  ' >
 
                 <Col id='lside' sm={3} className=' bg-light border-0   py-5 '>

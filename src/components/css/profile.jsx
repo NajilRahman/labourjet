@@ -161,7 +161,7 @@ const [reRender,setReRender]=useState('')
           localStorage.setItem('user', '')
         }}>Logout</button></Col>
 
-        <Col sm={12}><button className='btn btn-warning p-1 mt-3 w-100' onClick={e => handleShow2()}>add Post</button></Col>
+        <Col sm={12}><button className='btn btn-info p-1 mt-3 w-100' onClick={e => handleShow2()}><i class="fa-solid fa-square-plus me-2"></i>add Post</button></Col>
 
 
 
