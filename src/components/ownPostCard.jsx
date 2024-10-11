@@ -50,6 +50,8 @@ const likeUpdate = (reqType) => {
       .then(res=>{
         console.log(res.data)
         setReload(!reload)
+        toast.success('comment added')
+
       })
     }
   return (

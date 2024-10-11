@@ -6,6 +6,7 @@ import { Col, Row, Badge, Button, Modal, Container } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import CommentMessage from './comment';
+import toast from 'react-hot-toast';
 function PostCard({card,render,reRender}) {
   const id=JSON.parse(localStorage.getItem('user'))._id
     const [liked,setLiked]=useState(card.liked.includes(id))
@@ -33,6 +34,8 @@ const sendComment=()=>{
   postData('postComment',{_id:card._id,comment:commentInput,commenterid:id})
   .then(res=>{
     console.log(res.data)
+    toast.success('comment added')
+
     setReload(!reload)
   })
 }
