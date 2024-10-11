@@ -1,0 +1,30 @@
+::-webkit-scrollbar {
+    display: none;
+  }
+  #smnav{
+   display: none;
+ }
+  #maindiv{
+    padding-inline: 12px;
+}
+  @media only screen and (max-width: 770px) {
+    #lside{
+       display: none;
+    }
+
+    #rside{
+       display: none;
+    }
+    #scroller{
+       width: 100%;
+
+    }
+    #maindiv{
+        padding-inline: 12px;
+    }
+    #smnav{
+      display: block;
+    }
+   
+}
+
