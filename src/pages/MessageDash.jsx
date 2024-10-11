@@ -40,7 +40,7 @@ function MessageDash() {
       
     })
 
-  }, [])
+  }, [message])
 
   useEffect(() => {
     socket=io(ioPort);
