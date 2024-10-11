@@ -24,7 +24,7 @@ function MessageDash() {
     getData(`getMessage/${id}`)
     .then(res=>{
       setMessage(res.data)
-      if(res.data.users[0]==viewerid)
+      if(res.data.users[0]!=viewerid)
       {
         postData('user',{id:res.data.users[0]})
         .then(res=>{
@@ -73,7 +73,7 @@ function MessageDash() {
          
    <Col className=''>
    <div className=' rounded-1  ' style={{width:'max-content'}}>
-                  <span><img className='img-fluid rounded-pill' style={{height:'auto',width:'50px'}} src={oppo?.imgUrl} alt="" /><span className='ms-2 text-black text-white' style={{fontWeight:'bold'}}>{oppo?.userName}</span></span>
+                  <span><img className='img-fluid rounded-pill' style={{height:'50px',width:'50px'}} src={oppo?.imgUrl} alt="" /><span className='ms-2 text-black text-white' style={{fontWeight:'bold'}}>{oppo?.userName}</span></span>
               </div>
    </Col>
           </Row>
