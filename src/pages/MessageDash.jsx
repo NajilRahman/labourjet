@@ -95,10 +95,10 @@ function MessageDash() {
 
 
   const sendMessage = () => {
-    postData('postMessage', { _id: id, messager: viewerid, msg: msgInput, recid: oppo._id,msgType:'payment' })
+    postData('postMessage', { _id: id, messager: viewerid, msg: msgInput, recid: oppo._id,msgType:'user' })
       .then(res => {
         
-        socket.emit('newMessage', { _id: id, messager: viewerid, msg: msgInput, recid: oppo }, (response) => {
+        socket.emit('newMessage', { _id: id, messager: viewerid, msg: msgInput, recid: oppo,msgType:'user'  }, (response) => {
           setMessage([...message, response])
         })
       })
@@ -146,7 +146,6 @@ function MessageDash() {
                 <Col sm={12}><SelfMessage message={obj} /></Col>
                 :<Col sm={12}><OthersMessage message={obj} /></Col>
               :obj.msgType=='workRequest'?
-                
                 obj.senderid == viewerid ?
                 <Col sm={12}><SelfworkReq data={obj}  chatid={id}/></Col>
                 :<Col sm={12}><OthersWorkReq data={obj} chatid={id}/></Col>

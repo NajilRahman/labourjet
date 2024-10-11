@@ -24,7 +24,7 @@ const navi=useNavigate()
                 <div className="card-footer">
 
                      
-                        <Link to={data.msg}><button className='btn btn-success w-100' >Pay</button></Link>
+                        <a href={data.msg}><button className='btn btn-success w-100' >Pay</button></a>
 
 
                 </div>
