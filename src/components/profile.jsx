@@ -5,6 +5,7 @@ import OwnPostCard from './ownPostCard'
 import { postData, putData } from '../apiServices/apiServices'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import Loading from './spinner'
 function Profile({ userData, render }) {
 
   //user data
@@ -24,7 +25,7 @@ function Profile({ userData, render }) {
 //rerender
 const [reRender,setReRender]=useState('')
 
-
+  const [loading,setLoading]=useState(true)
   //add post
   const data = new Date()
   const [addPost, setAddPost] = useState({ imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0aQSskeO3CT-d7TlGa7S7xY47gNkCvj8QNQ&s', userid: userData._id, description: '', liked: [] })
@@ -37,7 +38,7 @@ const [reRender,setReRender]=useState('')
     postData('fetchUserPost', {viewerid})
       .then(res => {
         setUserPost(res.data.reverse())
-      
+        setLoading(false)
         render(res)
       })
 
@@ -102,70 +103,70 @@ const [reRender,setReRender]=useState('')
 
   return (
     <div className=' bg-white  mb-2 px-3 py-2  w-100 rounded-1 text-center ' style={{ height: 'max-content' }}>
-      <Row>
-        <Col sm={6}>
-          <Row>
-            <Col sm={12} className='d-flex justify-content-center py-3'>
-              <div className='rounded-pill' style={{ width: '150px', height: '150px', backgroundImage: `url(${userData.imgUrl ? userData.imgUrl : userEdited.imgUrl != '' ? userEdited.imgUrl : 'https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg'} )`, backgroundSize: 'cover' }}></div>
-            </Col>
-            <Col className='ms-2 text-black mb-4'>{userData.userName} </Col>
+     {
+      loading==true?      <div style={{height:'100vh'}}  className='d-flex justify-content-center align-items-center'><Loading/></div>
 
-          </Row>
-        </Col>
-        <Col sm={6} className='d-flex justify-content-center align-items-center'>
-          <Row >
-            <Col className='mx-5'><span className='d-block'>{userPost.length}</span><span>Posts</span></Col>
-            <Col className='mx-5'><span className='d-block'>{userData.follower.length}</span><span>Followers</span></Col>
-            {
-              userData.userType != 'user' ? <Col><span className='d-block'>Developer</span><span>Job</span></Col> : <></>
-            }
+      : <Row>
+      <Col sm={6}>
+        <Row>
+          <Col sm={12} className='d-flex justify-content-center py-3'>
+            <div className='rounded-pill' style={{ width: '150px', height: '150px', backgroundImage: `url(${userData.imgUrl ? userData.imgUrl : userEdited.imgUrl != '' ? userEdited.imgUrl : 'https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg'} )`, backgroundSize: 'cover' }}></div>
+          </Col>
+          <Col className='ms-2 text-black mb-4'>{userData.userName} </Col>
 
-            {
-              userData.userType != 'user' ? <Col sm={12} className='border-2 bg-light p-3 mt-4'>
+        </Row>
+      </Col>
+      <Col sm={6} className='d-flex justify-content-center align-items-center'>
+        <Row >
+          <Col className='mx-5'><span className='d-block'>{userPost.length}</span><span>Posts</span></Col>
+          <Col className='mx-5'><span className='d-block'>{userData.follower.length}</span><span>Followers</span></Col>
+          {
+            userData.userType != 'user' ? <Col><span className='d-block'>Developer</span><span>Job</span></Col> : <></>
+          }
 
-                <h5>Skills</h5>
-                <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                  <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-                </Badge>
-                <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                  <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-                </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                  <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-                </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                  <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-                </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                  <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-                </Badge>
+          {
+            userData.userType != 'user' ? <Col sm={12} className='border-2 bg-light p-3 mt-4'>
 
-              </Col> : <></>
-            }
+              <h5>Skills</h5>
+              <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
+              </Badge>
+              <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
+              </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
+              </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
+              </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
+              </Badge>
 
-          </Row>
-        </Col>
-        <Col sm={12} className='my-4 text-center'>
-          <Row>
+            </Col> : <></>
+          }
 
-            <Col sm={6} className='  text-black d-block my-2 '><i className="fa-regular fa-envelope fa-lg me-2"></i>{userData.email}</Col>
-            <Col sm={6} className=' text-black my-2 '><i className="fa-solid fa-phone fa-lg me-2"></i>{userData.phone}</Col>
-            <Col sm={6} className=' text-black  my-2'><i className="fa-solid fa-envelopes-bulk fa-lg me-2"></i>{userData.postal}</Col>
-            <Col sm={6} className='  text-black my-2 '><i className="fa-solid fa-location-dot fa-lg me-2"></i>{userData.state} ,india</Col>
-          </Row>
+        </Row>
+      </Col>
+      <Col sm={12} className='my-4 text-center'>
+        <Row>
 
-        </Col>
+          <Col sm={6} className='  text-black d-block my-2 '><i className="fa-regular fa-envelope fa-lg me-2"></i>{userData.email}</Col>
+          <Col sm={6} className=' text-black my-2 '><i className="fa-solid fa-phone fa-lg me-2"></i>{userData.phone}</Col>
+          <Col sm={6} className=' text-black  my-2'><i className="fa-solid fa-envelopes-bulk fa-lg me-2"></i>{userData.postal}</Col>
+          <Col sm={6} className='  text-black my-2 '><i className="fa-solid fa-location-dot fa-lg me-2"></i>{userData.state} ,india</Col>
+        </Row>
 
-
-        <Col sm={6}><button className='btn btn-primary p-1 mt-3 w-100' onClick={e => handleShow()}>Edit Profile</button></Col>
-        <Col sm={6}><button className='btn btn-danger p-1 mt-3 w-100' onClick={e => {
-          navi('/')
-          toast.success('loged out')
-          localStorage.setItem('user', '')
-        }}>Logout</button></Col>
-
-        <Col sm={12}><button className='btn btn-info p-1 mt-3 w-100' onClick={e => handleShow2()}><i class="fa-solid fa-square-plus me-2"></i>add Post</button></Col>
+      </Col>
 
 
+      <Col sm={6}><button className='btn btn-primary p-1 mt-3 w-100' onClick={e => handleShow()}>Edit Profile</button></Col>
+      <Col sm={6}><button className='btn btn-danger p-1 mt-3 w-100' onClick={e => {
+        navi('/')
+        toast.success('loged out')
+        localStorage.setItem('user', '')
+      }}>Logout</button></Col>
 
-      </Row>
+      <Col sm={12}><button className='btn btn-info p-1 mt-3 w-100' onClick={e => handleShow2()}><i class="fa-solid fa-square-plus me-2"></i>add Post</button></Col>
+
       <Row className='my-5 border-2'>
         {
           userPost.length > 0
@@ -179,6 +180,10 @@ const [reRender,setReRender]=useState('')
 
 
       </Row>
+
+    </Row>
+     }
+      
 
 
 

@@ -50,6 +50,7 @@ const likeUpdate = (reqType) => {
       .then(res=>{
         console.log(res.data)
         setReload(!reload)
+        setCommentInput('')
         toast.success('comment added')
 
       })
@@ -57,9 +58,9 @@ const likeUpdate = (reqType) => {
   return (
     <div >
         
-        <Card className='w-100 my-2 ' key={post._id}  style={{minHeight:'350px'}}>
+        <Card className='w-100 my-2 shadow' key={post._id}  >
        
-          <Card.Img variant="bottom" style={{height:'200px',width:'auto'}}src={post.imgUrl}/>
+          <Card.Img variant="bottom" style={{height:'auto',width:'auto'}}src={post.imgUrl}/>
           <Card.Body className='border-0'>
             <Card.Text className='text-start'>
               {post.description}
@@ -107,6 +108,7 @@ const likeUpdate = (reqType) => {
                     aria-label=""
                     aria-describedby="basic-addon2"
                     onChange={e=>setCommentInput(e.target.value)}
+                    value={commentInput}
                 />
                 <Button variant='outline-dark' className='bg-dark' id="button-addon2" onClick={sendComment}>
                     <i className="fa-solid fa-paper-plane text-white fa-xl "></i>

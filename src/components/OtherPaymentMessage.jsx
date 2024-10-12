@@ -10,8 +10,8 @@ const navi=useNavigate()
   return (
     <Row>
      <Col sm={6}>
-        <div className=' my-2 d-flex justify-content-start ms-4 text-center'>
-        <section className="wrapper my-3 ">
+        <div className=' my-2 d-flex justify-content-start ms-4 text-center '>
+        <section className="wrapper my-3 shadow">
             <div className=" mb-4 ">
               <div className="card" >
               <div className="card-body">

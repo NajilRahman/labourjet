@@ -41,6 +41,7 @@ useEffect(() => {
     postData('postComment',{_id:post._id,comment:commentInput,commenterid:id})
     .then(res=>{
       console.log(res.data)
+      setCommentInput('')
       toast.success('comment added')
       setReload(!reload)
     })
@@ -48,9 +49,9 @@ useEffect(() => {
   return (
     <div >
 
-      <Card className='w-100 my-2 ' key={post.postid} style={{ minHeight: '350px' }}>
+      <Card className='w-100 my-2 ' key={post.postid} >
         
-        <Card.Img variant="bottom" style={{ height: '200px', width: 'auto' }} src={post?.imgUrl} />
+        <Card.Img variant="bottom" style={{ height: 'auto', width: 'auto' }} src={post?.imgUrl} />
         <Card.Body className='border-0'>
           <Card.Text className='text-start'>
             {post.description}
@@ -79,7 +80,7 @@ useEffect(() => {
         <Modal.Header closeButton>
           Comments
         </Modal.Header>
-        <Modal.Body className='text-center'>
+        <Modal.Body className='text-center shadow'>
           <Row>
            <Col sm={12} className='' style={{height:'80vh',overflowY:'scroll'}}>
             {
@@ -99,6 +100,7 @@ useEffect(() => {
                     placeholder="type..."
                     aria-label=""
                     aria-describedby="basic-addon2"
+                    value={commentInput}
                     onChange={e=>setCommentInput(e.target.value)}
                 />
                 <Button variant='outline-dark' className='bg-dark' id="button-addon2" onClick={sendComment}>

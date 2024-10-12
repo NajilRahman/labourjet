@@ -5,14 +5,18 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Recommendation from './Recommendation';
 import { getData, postData } from '../apiServices/apiServices';
+import Loading from './spinner';
 function Search({userData,render}) {
     
     const [search,setSearch]=useState('')
     const [find,setFind]=useState([])
+    const [loading,setLoading]=useState(false)
     const searchUser=()=>{
+        setLoading(true)
         postData('findUser',{search})
         .then(res=>{
            setFind(res.data)
+           setLoading(false)
         })
     }
 
@@ -33,7 +37,8 @@ function Search({userData,render}) {
             </InputGroup>
             <div id='scroller' sm={12} md={6} className=' bg-white   p-1 ' style={{ maxHeight: '100vh ', overflowX: 'hidden', overflowY: 'scroll' }}>
             <Row>
-                {
+                {   loading?<div style={{height:'100vh'}}  className='d-flex justify-content-center align-items-center'><Loading/></div>
+                    :
                     find.length>0?
                     find.map(obj=>(
                         <Col sm={12} md={4}><Recommendation userData={obj} render={render} /></Col>

@@ -7,10 +7,10 @@ function SelfworkReq({data,chatid}) {
       <Col sm={6}>
       </Col>
       <Col sm={6}>
-        <div className=' my-2 d-flex justify-content-end ms-4 text-center'>
+        <div className=' my-2 d-flex justify-content-end ms-4 text-center '>
           <section className="wrapper my-3 ">
             <div className=" mb-4 ">
-              <div className="card" >
+              <div className="card shadow" >
                 <div className="card-body">
                   <h5 className="card-title mt-0">
                     <div className="text-dark" ><p>{data.workName}</p></div>

@@ -34,6 +34,7 @@ const sendComment=()=>{
   postData('postComment',{_id:card._id,comment:commentInput,commenterid:id})
   .then(res=>{
     console.log(res.data)
+    setCommentInput('')
     toast.success('comment added')
 
     setReload(!reload)
@@ -115,6 +116,7 @@ const sendComment=()=>{
                     placeholder="type..."
                     aria-label=""
                     aria-describedby="basic-addon2"
+                    value={commentInput}
                     onChange={e=>setCommentInput(e.target.value)}
                 />
                 <Button variant='outline-dark' className='bg-dark' id="button-addon2" onClick={sendComment}>

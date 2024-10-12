@@ -17,6 +17,7 @@ import SelfworkReq from '../components/selfworkReq';
 import OthersWorkReq from '../components/othersWorkReq';
 import SelfPaymentMessage from '../components/selfPaymentMessage';
 import OtherPaymentMessage from '../components/OtherPaymentMessage';
+import Loading from '../components/spinner';
 
 
 const ioPort = `http://localhost:4000`
@@ -39,6 +40,7 @@ function MessageDash() {
    const [show2, setShow2] = useState(false);
    const handleClose2 = () => setShow2(false);
    const handleShow2 = () => setShow2(true);
+  const [loading,setLoading]=useState(true)
 
 
   useEffect(() => {
@@ -49,12 +51,15 @@ function MessageDash() {
           postData('user', { id: res.data.users[0] })
             .then(res => {
               setOppo(res.data)
+              setLoading(false)
             })
         }
         else {
           postData('user', { id: res.data.users[1] })
             .then(res => {
               setOppo(res.data)
+              setLoading(false)
+
             })
         }
 
@@ -95,9 +100,9 @@ function MessageDash() {
 
 
   const sendMessage = () => {
-    postData('postMessage', { _id: id, messager: viewerid, msg: msgInput, recid: oppo._id,msgType:'user' })
+    postData('postMessage', { _id: id, messager: viewerid, msg: msgInput, recid: oppo._id,msgType:'user'})
       .then(res => {
-        
+        setMsgInput('')
         socket.emit('newMessage', { _id: id, messager: viewerid, msg: msgInput, recid: oppo,msgType:'user'  }, (response) => {
           setMessage([...message, response])
         })
@@ -106,40 +111,25 @@ function MessageDash() {
 
   return (
     <div>
-      <Navbar className="bg-black">
-        <Container>
-          <Row className=' '>
-
-            <Col sm={9} className=''>
-              <div className=' rounded-1  ' style={{ width: 'max-content' }}>
-                <span><img className='img-fluid rounded-pill' style={{ height: '50px', width: '50px' }} src={oppo?.imgUrl} alt="" /><span className='ms-2 text-black text-white' style={{ fontWeight: 'bold' }}>{oppo?.userName}</span></span>
-              </div>
-            </Col>
-          </Row>        <Navbar.Toggle />
-          <Navbar.Collapse className="mx-3">
-            <Navbar.Text>
-            <Dropdown>
-      <Dropdown.Toggle className='btn bg-black' id="dropdown-basic">
-      </Dropdown.Toggle>
-
-      <Dropdown.Menu>
-        <Dropdown.Item className='bg-sucess'onClick={handleShow2} >Payment Request</Dropdown.Item>
-        <Dropdown.Item  onClick={handleShow}>Work Request</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-
-            </Navbar.Text>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+        <Navbar className="text-center bg-light shadow" style={{height:'max-content'}}>
+            <Row className=' '>
+  
+              <Col sm={12} className='ms-4'>
+                <div className=' ' style={{ width: 'max-content' }}>
+                  <span><img className='img-fluid rounded-pill  ' style={{ height: '50px', width: '50px' }} src={oppo?.imgUrl} alt="" /><span className='ms-3 text-black text-black' style={{ fontWeight: 'bold' }}>{oppo?.userName}</span></span>
+                </div>
+              </Col>
+            </Row>        <Navbar.Toggle />
+        </Navbar>
       
 
 
-      <div className='w-100 bg-white' style={{ height: '70vh', overflowY: 'scroll' }}>
+      <div className='w-100 ' style={{ height: '70vh', overflowY: 'scroll' }}>
         <Row className='w-100'>
 
           {
-
+            loading?<div style={{height:'70vh'}}  className='d-flex justify-content-center align-items-center'><Loading/></div>
+            :
             message.messages?.map(obj => (
               obj.msgType=='user'?
               obj.messager == viewerid ?
@@ -160,15 +150,24 @@ function MessageDash() {
         </Row>
       </div>
 
-      <Container className=''>
-        <InputGroup className="mb-3">
+      <Container className='' >
+        <InputGroup className="mb-3" >
           <Form.Control
             placeholder="type..."
             aria-label=""
             aria-describedby="basic-addon2"
+            className='rounded-5'
             onChange={e => setMsgInput(e.target.value)}
+            value={msgInput}
           />
-          <Button variant='outline-dark' className='bg-dark' id="button-addon2" onClick={sendMessage}>
+          
+           <Button variant='outline-dark ' style={{width:'max-content'}} className='bg-light rounded-pill  text-center p-2 mx-1' id="button-addon2" onClick={handleShow2}>
+            <i className="fa-solid fa-comments-dollar text-black  "></i>
+          </Button>
+          <Button variant='outline-dark ' style={{width:'max-content'}} className='bg-light rounded-pill  text-center p-2 mx-1' id="button-addon2" onClick={handleShow}>
+            <i className="fa-solid fa-person-circle-question text-black  "></i>
+          </Button>
+          <Button variant='outline-black' className='bg-dark rounded-pill text-center p-2 mx-1' style={{width:'max-content'}} id="button-addon2" onClick={sendMessage}>
             <i className="fa-solid fa-paper-plane text-white fa-xl "></i>
           </Button>
 

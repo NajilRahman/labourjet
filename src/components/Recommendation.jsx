@@ -18,7 +18,7 @@ function Recommendation({userData,render}) {
 
 }
   return (
-    <div className=' bg-light border-2 mb-2 px-3 py-2  w-100 rounded-1 text-center ' style={{height:'max-content'}}>
+    <div className=' bg-light border-2 my-3 px-3 py-2  w-100 rounded-1 text-center shadow' style={{height:'max-content'}}>
 <Row className=''>
     <Col sm-12><img className='img-fluid rounded-pill' style={{height:'60px',width:'60px'}} src={userData?.imgUrl} alt="" /></Col>
    
