@@ -3,8 +3,8 @@ import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Recommendation from '../Recommendation';
-import { getData, postData } from '../../apiServices/apiServices';
+import Recommendation from './Recommendation';
+import { getData, postData } from '../apiServices/apiServices';
 function Search({userData,render}) {
     
     const [search,setSearch]=useState('')

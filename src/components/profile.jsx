@@ -1,8 +1,8 @@
 import React from 'react'
 import { Col, Row, Badge, Button, Modal } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
-import OwnPostCard from '../ownPostCard'
-import { postData, putData } from '../../apiServices/apiServices'
+import OwnPostCard from './ownPostCard'
+import { postData, putData } from '../apiServices/apiServices'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 function Profile({ userData, render }) {

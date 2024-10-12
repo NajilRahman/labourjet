@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import './css/userHome.css'
 import Recommendation from '../components/Recommendation';
 import Home from '../components/Home';
-import Search from '../components/css/search';
+import Search from '../components/search';
 import Work from '../components/work';
 import Message from '../components/Message';
-import Profile from '../components/css/profile';
+import Profile from '../components/profile';
 import { getData, postData } from '../apiServices/apiServices';
 function LandingHome() {
     const id = JSON.parse(localStorage.getItem('user'))._id
