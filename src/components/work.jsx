@@ -3,10 +3,11 @@ import WorkCard from './workCard'
 import { Row,Col } from 'react-bootstrap'
 import { postData } from '../apiServices/apiServices'
 import Loading from './spinner'
-function Work() {
+function Work({render}) {
   const id=JSON.parse(localStorage.getItem('user'))._id
   const [works,setWorks]=useState([])
   const [loading,setLoading]=useState(true)
+  const [reRender,setReRender]=useState('')
   useEffect(()=>{
     postData('getWorksData',{id})
     .then(res=>{
@@ -14,7 +15,7 @@ function Work() {
       console.log(res.data)
       setLoading(false)
     })
-  },[])
+  },[reRender])
   return (
     <div id='scroller' sm={12} md={6} className=' bg-white  p-5 ' style={{ maxHeight: '100vh ',height:'100vh', overflowX: 'hidden', overflowY: 'scroll' }}>
         <h1 className='text-black'>Work Details</h1>
@@ -23,7 +24,7 @@ function Work() {
 
         :works.map(obj=>(
           <Col sm={12} md={6}>     
-          <WorkCard workData={obj} />
+          <WorkCard workData={obj} render={setReRender} />
          </Col>
         ))
        }

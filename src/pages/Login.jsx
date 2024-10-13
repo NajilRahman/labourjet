@@ -16,12 +16,11 @@ const Login = () => {
     postData('userLogin',loginData)
     .then(res=>{
       localStorage.setItem('user',JSON.stringify(res.data))
-      console.log(res.data)
       toast.success('loagined succesfully')
       navi('/landinghome')
     })
     .catch(err=>{
-      toast.error('failed to login')
+      toast.error(err.response.data)
     })
   }
 

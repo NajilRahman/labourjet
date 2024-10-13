@@ -49,7 +49,7 @@ useEffect(() => {
   return (
     <div >
 
-      <Card className='w-100 my-2 ' key={post.postid} >
+      <Card className='w-100 my-2  shadow' key={post.postid} >
         
         <Card.Img variant="bottom" style={{ height: 'auto', width: 'auto' }} src={post?.imgUrl} />
         <Card.Body className='border-0'>

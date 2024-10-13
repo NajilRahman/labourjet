@@ -58,7 +58,7 @@ const likeUpdate = (reqType) => {
   return (
     <div >
         
-        <Card className='w-100 my-2 shadow' key={post._id}  >
+        <Card className='w-100 my-2 ms-3 shadow' key={post._id}  >
        
           <Card.Img variant="bottom" style={{height:'auto',width:'auto'}}src={post.imgUrl}/>
           <Card.Body className='border-0'>
@@ -94,7 +94,7 @@ const likeUpdate = (reqType) => {
               comments.length>0?
               comments.map(obj=>(
                
-                  <CommentMessage userid={obj.userid} comment={obj.comment} reRender={reRender} handleClose={handleClose}></CommentMessage>
+                  <CommentMessage userid={obj.commenterid} comment={obj.comment} reRender={reRender} handleClose={handleClose}></CommentMessage>
               ))
               
               :<h3 className='text-center'>No Comments</h3>

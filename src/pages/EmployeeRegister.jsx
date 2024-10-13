@@ -1,12 +1,37 @@
 import React, { useState } from 'react';
 import { Button, Col, Row,Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import {postData} from '../apiServices/apiServices'
 import AuthNavbar from '../components/authNavbar';
 const EmployeeRegister = () => {
     const [skills,setSkills]=useState([])
     const [skill,setSkill]=useState('')
     const [jobType,setJobType]=useState(false)
+    const [form,setForm]=useState({userName:'',email:'',phone:'',password:'',jobRole:'',idCard:'',education:'',state:'',postal:'',documents:'',approvel:'rejected',userType:'employee'})
+
+    const updateDoc= (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader;
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setForm({ ...form, documents: reader.result })
+        }
+    }
+    const updateidCard= (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader;
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setForm({ ...form, idCard: reader.result })
+        }
+    }
+
+    const EmployeeLogin=()=>{
+        postData('employeeReg',form)
+        .then(res=>{
+            console.log(res.data)
+        })
+    }
     return (
         <>
             <AuthNavbar/>
@@ -80,21 +105,21 @@ const EmployeeRegister = () => {
     
                                         </Row>
                                         <div data-mdb-input-init className="form-outline mb-4">
-                                            <input type="text" id="form3Example222323" className="form-control" />
+                                            <input type="text" id="form3Example222323" className="form-control" value={form.userName} onChange={e=>setForm({...form,userName:e.target.value})}/>
                                             <label className="form-label" htmlFor="form3Example222323">userName</label>
                                         </div>
 
                                         <div data-mdb-input-init className="form-outline mb-4">
-                                            <input type="email" id="form3Example3" className="form-control" />
+                                            <input type="email" id="form3Example3" className="form-control" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} />
                                             <label className="form-label" htmlFor="form3Example3">Email address</label>
                                         </div>
                                         <div data-mdb-input-init className="form-outline mb-4">
-                                            <input type="number" id="form4Example4" className="form-control" />
+                                            <input type="number" id="form4Example4" className="form-control" value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})}/>
                                             <label className="form-label" htmlFor="form4Example4">Phone</label>
                                         </div>
     
                                         <div data-mdb-input-init className="form-outline mb-4">
-                                            <input type="password" id="form3Example11" className="form-control" autocomplete />
+                                            <input type="password" id="form3Example11" className="form-control" autocomplete value={form.password} onChange={e=>setForm({...form,password:e.target.value})}/>
                                             <label className="form-label" htmlFor="form3Example11">Password</label>
                                         </div>
     
@@ -104,7 +129,7 @@ const EmployeeRegister = () => {
                                             <>
                                             <Col sm={12} md={6}>
                                                 <div data-mdb-input-init className="form-outline mb-4">
-                                                    <input type="file" id="form3Example21" className="form-control" />
+                                                    <input type="file" id="form3Example21" className="form-control"  onChange={e=>updateDoc(e)}/>
                                                     <label className="form-label  " htmlFor="form3Example21">Upload Documents Or Certificate</label>
                                                 </div>
                                             </Col>
@@ -114,19 +139,19 @@ const EmployeeRegister = () => {
                                          }
                                           <Col sm={12} md={6}>
                                              <div data-mdb-input-init className="form-outline mb-4">
-                                             <input type="text" id="form3Example2321" className="form-control" />
+                                             <input type="text" id="form3Example2321" className="form-control" value={form.jobRole} onChange={e=>setForm({...form,jobRole:e.target.value})}/>
                                              <label className="form-label  " htmlFor="form3Example2321">Job Role</label>
                                          </div>
                                          </Col>
                                             <Col sm={12} md={6}>
                                                 <div data-mdb-input-init className="form-outline mb-4">
-                                                    <input type="file" id="form3Example21" className="form-control" />
+                                                    <input type="file" id="form3Example21" className="form-control"  onChange={e=>updateidCard(e)}/>
                                                     <label className="form-label  " htmlFor="form3Example21">Upload Id Card</label>
                                                 </div>
                                             </Col>
                                             <Col>
                                             <div data-mdb-input-init className="form-outline mb-4">
-                                            <input type="higher Education" id="form3Example31" className="form-control"  />
+                                            <input type="higher Education" id="form3Example31" className="form-control"  value={form.education} onChange={e=>setForm({...form,education:e.target.value})}/>
                                             <label className="form-label" htmlFor="form3Example31">Higher Education</label>
                                         </div>
                                             </Col>
@@ -135,7 +160,7 @@ const EmployeeRegister = () => {
     
                                         <Row>
                                             <Col>
-                                                <select id="inputState" className="form-select">
+                                                <select id="inputState" className="form-select" value={form.state} onChange={e=>setForm({...form,state:e.target.value})}>
                                                     <option selected>Choose...</option>
                                                     <option value="Andhra Pradesh">Andhra Pradesh</option>
                                                     <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -173,7 +198,7 @@ const EmployeeRegister = () => {
     
                                             <Col>
                                                 <div data-mdb-input-init className="form-outline mb-4">
-                                                    <input type="Number" id="form3Example6" className="form-control" />
+                                                    <input type="Number" id="form3Example6" className="form-control" value={form.postal} onChange={e=>setForm({...form,postal:e.target.value})}/>
                                                     <label className="form-label" htmlFor="form3Example6">Postal</label>
                                                 </div>
                                             </Col>
@@ -183,7 +208,7 @@ const EmployeeRegister = () => {
                                        
     
     
-                                        <button  data-mdb-button-init data-mdb-ripple-init className="btn w-100 btn-primary btn-block mt-2 mb-4">
+                                        <button  data-mdb-button-init data-mdb-ripple-init className="btn w-100 btn-primary btn-block mt-2 mb-4" onClick={e=>{e.preventDefault(); EmployeeLogin()}}>
                                             Sign up
                                         </button>
                                         <div className="mt-3">
