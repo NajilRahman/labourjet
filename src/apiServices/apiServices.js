@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const baseURL= `http://localhost:3000/`
-// const baseURL= `https://labourjet-backend.onrender.com/`
+// const baseURL= `http://localhost:3000/`
+const baseURL= `https://labourjet-backend.onrender.com/`
 
 export const postData=(path,data)=>axios.post(`${baseURL}${path}`,data)
 

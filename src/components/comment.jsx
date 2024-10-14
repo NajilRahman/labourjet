@@ -10,7 +10,6 @@ const navi=useNavigate()
         postData('user',{id:userid})
         .then(res=>{
             setUser(res.data)
-            console.log(res.data)
         })
     }, [])
     

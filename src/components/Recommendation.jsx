@@ -11,7 +11,6 @@ function Recommendation({userData,render}) {
   const followRequest=(reqType)=>{
     postData('followUpdate',{userData,viewerid:viewer._id,reqType})
     .then(res=>{
-      console.log(followed)
       setFolllowed(!followed)
       render(res)
     })

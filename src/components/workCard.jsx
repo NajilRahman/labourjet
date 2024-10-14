@@ -18,8 +18,8 @@ const WorkCard = ({ workData,render }) => {
 
 
     const sendRating=(value)=>{
-        postData('setRating',{_id:workData._id,rating:value})
         setRating(value)
+        postData('setRating',{_id:workData._id,rating:value})
         .then(res=>{
             toast.success('Rating Updated')
             render(res.data)
@@ -31,7 +31,6 @@ const WorkCard = ({ workData,render }) => {
             postData('workStatusUpdate', { status: 'Approved', chatid: workData.chatid, workid: workData._id })
                 .then(res => {
                     toast.success('Work Approved')
-                    console.log(res.data)
                     render(res.data)
                 })
         }
@@ -39,7 +38,6 @@ const WorkCard = ({ workData,render }) => {
             postData('workStatusUpdate', { status: 'Rejected', chatid: workData.chatid, workid: workData._id })
                 .then(res => {
                     toast.success('Work Rejected')
-                    console.log(res.data)
                     render(res.data)
                 })
         }
@@ -51,7 +49,6 @@ const WorkCard = ({ workData,render }) => {
         postData('workStatusUpdate', { status: req, chatid: workData.chatid, workid: workData._id })
             .then(res => {
                 toast.success('Work Completed')
-                console.log(res.data)
                 render(res.data)
             })
 
@@ -94,8 +91,17 @@ const WorkCard = ({ workData,render }) => {
 
                                     </Col>
                                     
+                                     {
+                                          workData.status=='completed'?<Col sm={12} className='my-3'>
+                                          <button  className='btn btn-white p-2' onClick={e=>setRatsendRatinging(1)}><i className={`fa-solid fa-star ${rating>0?'text-warning':''}`}></i></button>
+                                          <button  className='btn btn-white p-2' onClick={e=>sendRating(2)}><i className={`fa-solid fa-star ${rating>1?'text-warning':''}`}></i></button>
+                                          <button  className='btn btn-white p-2' onClick={e=>sendRating(3)}><i className={`fa-solid fa-star ${rating>2?'text-warning':''}`}></i></button>
+                                          <button  className='btn btn-white p-2' onClick={e=>sendRating(4)}><i className={`fa-solid fa-star ${rating>3?'text-warning':''}`}></i></button>
+                                          <button  className='btn btn-white p-2' onClick={e=>sendRating(5)}><i className={`fa-solid fa-star ${rating>4?'text-warning':''}`}></i></button>
+                                      </Col>
+                                      :''
                                      
-                                    
+                                     }
                                 </Row>
                                  : <>
                                     <Row>

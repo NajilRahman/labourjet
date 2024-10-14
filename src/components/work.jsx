@@ -12,7 +12,6 @@ function Work({render}) {
     postData('getWorksData',{id})
     .then(res=>{
       setWorks(res.data.reverse())
-      console.log(res.data)
       setLoading(false)
     })
   },[reRender])

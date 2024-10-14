@@ -88,7 +88,6 @@ function MessageDash() {
   const sendWorkRequest=()=>{
     postData('sendWorkRequest', { _id: id,  viewerid,msgType:'workRequest',workName:work.workName,description:work.description,date:work.date, recid: oppo._id })
     .then(res => {
-      console.log(res.data)
       handleClose()
       socket.emit('newMessage', { _id: id, viewerid,msgType:'workRequest',workName:work.workName,description:work.description,date:work.date, recid: oppo._id }, (response) => {
         setMessage([...message, response])

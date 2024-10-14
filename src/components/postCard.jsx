@@ -33,7 +33,6 @@ useEffect(() => {
 const sendComment=()=>{
   postData('postComment',{_id:card._id,comment:commentInput,commenterid:id})
   .then(res=>{
-    console.log(res.data)
     setCommentInput('')
     toast.success('comment added')
 

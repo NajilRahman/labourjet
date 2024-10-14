@@ -28,7 +28,6 @@ const likeUpdate = (reqType) => {
   postData('likeUpdate', { _id:post._id,viewerid: userData._id, reqType })
     .then(res => {
       setLiked(!res.data.liked.includes(userData._id))
-      console.log(res.data.liked)
       render(res)
     })
 }
@@ -48,7 +47,6 @@ const likeUpdate = (reqType) => {
     const sendComment=()=>{
       postData('postComment',{_id:post._id,comment:commentInput,commenterid:id})
       .then(res=>{
-        console.log(res.data)
         setReload(!reload)
         setCommentInput('')
         toast.success('comment added')

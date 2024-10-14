@@ -7,7 +7,6 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import Loading from './spinner'
 function Profile({ userData, render }) {
-
   //user data
   const viewerid=JSON.parse(localStorage.getItem('user'))._id
   const [user, setUser] = useState(userData)
@@ -36,7 +35,9 @@ const [reRender,setReRender]=useState('')
   const [rating,setRating]=useState(0)
   const navi = useNavigate()
 
-
+//skill add
+const [skills,setSkills]=useState(user.skills)
+const [skill,setSkill]=useState('')
   
 
   useEffect(() => {
@@ -89,32 +90,41 @@ const [reRender,setReRender]=useState('')
 
 
   const uploadPost = () => {
+    setLoading(true)
     postData('uploadPost', addPost)
       .then(res => {
         toast.success('Post Uploaded')
+        setLoading(false)
+
         setAddPost({ imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0aQSskeO3CT-d7TlGa7S7xY47gNkCvj8QNQ&s', userid: userData._id, description: '' })
         handleClose2()
         setReRender(res)
         render(res)
       })
       .catch(err => {
+        setLoading(false)
         toast.error('post upload failed')
       })
   }
 
 
   const updateProfile = () => {
+    setLoading(true)
 
     if (userEdited.phone != '' && userEdited.userName != '' && userEdited.postal != '') {
-      putData('profileupdate', userEdited)
+      putData('profileupdate', {...userEdited,skills:skills})
         .then(res => {
           render(res)
+          setLoading(false)
+
           toast.success('profile Updated')
           handleClose()
         })
     }
     else {
       toast.error('fill All Input')
+      setLoading(false)
+
     }
 
   }
@@ -163,19 +173,14 @@ const [reRender,setReRender]=useState('')
             userData.userType != 'user' ? <Col sm={12} className='border-2 bg-light p-3 mt-4'>
 
               <h5>Skills</h5>
-              <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
+             {
+              userData.skills.map(obj=>(
+                <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                <span>{obj}</span>
               </Badge>
-              <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-              </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-              </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-              </Badge> <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                <span>maths</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
-              </Badge>
-
+              ))
+             }
+              
             </Col> : <></>
           }
 
@@ -232,7 +237,9 @@ const [reRender,setReRender]=useState('')
           Edit Profile
         </Modal.Header>
         <Modal.Body className='text-center px-5'>
-          <Row>
+          {
+            loading? <Loading/>
+            :<Row>
             <Col sm={12}>
               <input type="file" id='profilepic' onChange={updateimg} style={{ display: 'none' }} />
               <label htmlFor='profilepic'>
@@ -295,10 +302,28 @@ const [reRender,setReRender]=useState('')
               </select>
 
             </Col>
+            <Col sm={8}>
+             <input className='form-control' type='text' placeholder='type skill ...'value={skill} onChange={e => setSkill( e.target.value )}></input> 
+            </Col>
+            <Col sm={4}>
+            <button className='btn text-white bg-black w-100' onClick={e=>{setSkills([...skills,skill])}}>add Skill</button>
+            </Col>
+            <Col sm={12} className='border-2 bg-light p-3 mt-4'>
+
+              <h5>Skills</h5>
+             {
+              skills?.map(obj=>(
+                <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                <span>{obj}<span className='ms-3' onClick={e=>{      setSkills( skills.filter(item=>item!=obj) ) }} style={{cursor:'pointer'}}>x</span></span>
+              </Badge>
+              ))
+             }
+            </Col>
             <Col sm={5} className='my-3'><button className='btn btn-success w-100' onClick={updateProfile}>Save Changes</button></Col>
             <Col sm={5} className='my-3'><button className='btn btn-info w-100'>Change Password</button></Col>
             <Col sm={2} className='my-3'><button className='btn btn-danger w-100' onClick={e => { setUserEdited(userData) }}>Reset</button></Col>
           </Row>
+}
         </Modal.Body>
       </Modal>
 
@@ -314,7 +339,11 @@ const [reRender,setReRender]=useState('')
           <Modal.Title>Add Post</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row>
+
+
+          {
+            loading?<div style={{height:'40vh'}}  className='d-flex justify-content-center align-items-center'><Loading/></div>
+            :<Row>
             <Col sm={6}>
               <input type="file" id='addpost' onChange={updatePost} style={{ display: 'none' }} />
 
@@ -331,6 +360,9 @@ const [reRender,setReRender]=useState('')
             </Col>
 
           </Row>
+          }
+          
+          
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={uploadPost}>Post</Button>

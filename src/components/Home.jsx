@@ -20,7 +20,6 @@ function Home({userData,render}) {
  {
   postData('homePost',userData?.follower)
   .then(res=>{
-    console.log(res.data)
     setHomePost(res.data.reverse())
     setLoading(false)
 })

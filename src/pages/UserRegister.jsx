@@ -5,7 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthNavbar from '../components/authNavbar';
 import { postData } from '../apiServices/apiServices';
 import toast from 'react-hot-toast';
+import Loading from '../components/spinner';
 const UserRegister = () => {
+  const [loading,setLoading]=useState(false)
   const [userData,setUserData]=useState({email:'',phone:'',password:'',postal:'',state:'',userName:'',userType:'user'})
   const navi=useNavigate()
   const userReg=()=>{
@@ -13,15 +15,17 @@ const UserRegister = () => {
    {
     if(userData.email!=""&&userData.phone!=""&&userData.password!=""&&userData.postal!=""&&userData.state!=""&&userData.userName!='')
       {
+        setLoading(true)
         postData('userReg',userData)
       .then(res=>{
-        console.log(userData)
+        setLoading(false)
        toast.success('Registration Completed')
         navi('/login')
        
       })
       .catch(err=>{
-        toast.error('Registration Failed')
+        toast.error('Registration Failed Check Email')
+        setLoading(false)
   
       })
       }
@@ -97,7 +101,9 @@ const UserRegister = () => {
   
               <div className="card bg-glass">
                 <div className="card-body px-4 py-5 px-md-5">
-                  <form >
+                 {
+                  loading?<div className='d-flex justify-content-center align-items-center' style={{height:'30vh'}}><Loading/></div>
+                  : <form >
                   <div data-mdb-input-init className="form-outline mb-4">
                       <input type="text" id="form3Example2233" className="form-control" value={userData.userName}  onChange={e=>setUserData({...userData,userName:e.target.value})}/>
                       <label className="form-label" htmlFor="form3Example2233">userName</label>
@@ -169,6 +175,7 @@ const UserRegister = () => {
                    <Link to={'/Login'}style={{textDecoration:'none'}} className="col-6 text-end "> <p>Already Have An Account ?</p></Link>
                       </div>
                   </form>
+                 }
                 </div>
               </div>
             </div>

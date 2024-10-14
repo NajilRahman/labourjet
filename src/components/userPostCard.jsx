@@ -40,7 +40,6 @@ useEffect(() => {
   const sendComment=()=>{
     postData('postComment',{_id:post._id,comment:commentInput,commenterid:id})
     .then(res=>{
-      console.log(res.data)
       setCommentInput('')
       toast.success('comment added')
       setReload(!reload)

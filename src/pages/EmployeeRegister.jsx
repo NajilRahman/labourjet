@@ -3,11 +3,13 @@ import { Button, Col, Row,Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {postData} from '../apiServices/apiServices'
 import AuthNavbar from '../components/authNavbar';
+import Loading from '../components/spinner';
+import toast from 'react-hot-toast';
 const EmployeeRegister = () => {
     const [skills,setSkills]=useState([])
-    const [skill,setSkill]=useState('')
     const [jobType,setJobType]=useState(false)
     const [form,setForm]=useState({userName:'',email:'',phone:'',password:'',jobRole:'',idCard:'',education:'',state:'',postal:'',documents:'',approvel:'rejected',userType:'employee'})
+    const [loading,setLoading]=useState(false)
 
     const updateDoc= (e) => {
         const file = e.target.files[0];
@@ -27,9 +29,17 @@ const EmployeeRegister = () => {
     }
 
     const EmployeeLogin=()=>{
+        setLoading(true)
         postData('employeeReg',form)
         .then(res=>{
-            console.log(res.data)
+            setLoading(false)
+            toast.success('Registration Successful ')
+            toast.success('We Will Verify Your Documents Soon ')
+
+        })
+        .catch(err=>{
+            toast.error(err.response.data)
+            setLoading(false)
         })
     }
     return (
@@ -97,7 +107,9 @@ const EmployeeRegister = () => {
     
                             <div className="card bg-glass">
                                 <div className="card-body px-4 py-5 px-md-5">
-                                    <form>
+                                    {
+                                        loading?<Loading/>
+                                        :<form>
                                         <Row className='text-center mb-3'>
                                         <Col><button className='btn fs-5 ' style={{backgroundColor:'tranparent',textDecoration:jobType==false?'underline':'none'}}  onClick={(e)=>{e.preventDefault();setJobType(false)}}>Skilled Job</button></Col>
     
@@ -215,6 +227,7 @@ const EmployeeRegister = () => {
                                             <Link to={'/Login'} style={{ textDecoration: 'none' }} className="col-6 text-end "> <p>Already have an account ?</p></Link>
                                         </div>
                                     </form>
+                                    }
                                 </div>
                             </div>
                         </div>

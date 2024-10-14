@@ -45,7 +45,6 @@ function LandingHome() {
         postData('recommend', { _id: JSON.parse(localStorage.getItem('user'))._id })
             .then(res => {
                 setRecom(res.data)
-                console.log(res.data)
             })
             
     }, [render])
