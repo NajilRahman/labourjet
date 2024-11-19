@@ -21,7 +21,15 @@ const Login = () => {
       localStorage.setItem('user',JSON.stringify(res.data))
       setLoading(false)
       toast.success('loagined succesfully')
-      navi('/landinghome')
+      if(res.data.userType=='admin')
+      {
+        navi('/adminpanel')
+
+      }
+      else{
+        navi('/landinghome')
+
+      }
     })
     .catch(err=>{
       toast.error(err.response.data)

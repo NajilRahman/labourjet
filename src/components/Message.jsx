@@ -3,7 +3,7 @@ import MessageCard from './MessageCard'
 import { postData } from '../apiServices/apiServices'
 import Loading from './spinner'
 
-function message() {
+function Message() {
   const id=JSON.parse(localStorage.getItem('user'))._id
   const [users,setUsers]=useState([])
   const [loading,setLoading]=useState(true)
@@ -18,8 +18,7 @@ function message() {
   }, [])
   
   return (
-    <div id='scroller' sm={12} md={6} className=' bg-white  p-5 ' style={{ maxHeight: '100vh ',height:'100vh', overflowX: 'hidden', overflowY: 'scroll' }}>
-        <h1 className='mb-5'>Message History</h1>
+    <div id='scroller ' sm={12} md={6} className=' bg-white  p-5 ' style={{ maxHeight: '100vh ',height:'100vh', overflowX: 'hidden', overflowY: 'scroll' }}>
       
       {  loading?<Loading/>
         :
@@ -37,4 +36,4 @@ function message() {
   )
 }
 
-export default message
+export default Message

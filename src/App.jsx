@@ -10,6 +10,7 @@ import LandingHome from './pages/LandingHome'
 import MessageDash from './pages/MessageDash'
 import UserProfile from './pages/userProfile'
 import { Toaster } from 'react-hot-toast'
+import AdminHome from './pages/AdminHome'
 function App() {
 
   return (
@@ -23,6 +24,8 @@ function App() {
           <Route path='/landinghome' element={<LandingHome/>}/>
           <Route path='/Message/:id' element={<MessageDash/>}/>
           <Route path='/user/:id' element={<UserProfile/>}/>
+          <Route path='/adminpanel' element={<AdminHome/>}/>
+
 
 
           <Route path='*' element={<h1>Page Not Found 404 !<h1/></h1>}/>

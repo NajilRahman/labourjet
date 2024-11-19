@@ -71,10 +71,26 @@ const likeUpdate = (reqType) => {
    <button className='btn ' onClick={e=>likeUpdate('like')}><i className={`fa-${liked?'solid':'regular'} fa-heart fa-xl`} style={{color:liked?'red':'black'}} ></i>{post.liked.length!==0?post.liked.length:''}</button>
 
 }            <button className='btn ' onClick={handleShow}><i className={`fa-regular fa-comment fa-xl`} ></i><h6>{comments.length!==0?comments.length:''}</h6></button>
-
-            <button className='btn ' onClick={deletePost}><i className="fa-solid fa-trash fa-xl text-danger "></i></button>
-
-
+ <div className="dropdown">
+              <button
+                className="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="fa-solid fa-circle-info fa-xl text-warning"></i>
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <a className="dropdown-item" href="#" onClick={deletePost}>
+                    <i className="fa-solid fa-trash text-danger me-2"></i> Delete Post
+                  </a>
+                </li>
+                {/* Add other actions if necessary */}
+                <li><a className="dropdown-item" href="#"><i className="fa-regular fa-pen-to-square me-2 text-success"></i>edit Post</a></li>
+              </ul>
+            </div>
             </div>
           </Card.Body>
         </Card>

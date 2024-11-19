@@ -201,7 +201,7 @@ const [skill,setSkill]=useState('')
       <Col sm={6}><button className='btn btn-primary p-1 mt-3 w-100' onClick={e => handleShow()}>Edit Profile</button></Col>
       <Col sm={6}><button className='btn btn-danger p-1 mt-3 w-100' onClick={e => {
         navi('/')
-        toast.success('loged out')
+        toast.success('logged out')
         localStorage.setItem('user', '')
       }}>Logout</button></Col>
 
@@ -302,23 +302,27 @@ const [skill,setSkill]=useState('')
               </select>
 
             </Col>
+           {userData.userType!='user'? <>
             <Col sm={8}>
-             <input className='form-control' type='text' placeholder='type skill ...'value={skill} onChange={e => setSkill( e.target.value )}></input> 
-            </Col>
-            <Col sm={4}>
-            <button className='btn text-white bg-black w-100' onClick={e=>{setSkills([...skills,skill])}}>add Skill</button>
-            </Col>
-            <Col sm={12} className='border-2 bg-light p-3 mt-4'>
-
-              <h5>Skills</h5>
-             {
-              skills?.map(obj=>(
-                <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                <span>{obj}<span className='ms-3' onClick={e=>{      setSkills( skills.filter(item=>item!=obj) ) }} style={{cursor:'pointer'}}>x</span></span>
-              </Badge>
-              ))
-             }
-            </Col>
+               <input className='form-control' type='text' placeholder='type skill ...'value={skill} onChange={e => setSkill( e.target.value )}></input> 
+              </Col>
+              <Col sm={4}>
+              <button className='btn text-white bg-black w-100' onClick={e=>{setSkills([...skills,skill])}}>add Skill</button>
+              </Col>
+              <Col sm={12} className='border-2 bg-light p-3 mt-4'>
+  
+                <h5>Skills</h5>
+               {
+                skills?.map(obj=>(
+                  <Badge pill bg="dark" className='py-3 px-3 my-2' >
+                  <span>{obj}<span className='ms-3' onClick={e=>{      setSkills( skills.filter(item=>item!=obj) ) }} style={{cursor:'pointer'}}>x</span></span>
+                </Badge>
+                ))
+               }
+              </Col>
+    </>
+            :''
+            }
             <Col sm={5} className='my-3'><button className='btn btn-success w-100' onClick={updateProfile}>Save Changes</button></Col>
             <Col sm={5} className='my-3'><button className='btn btn-info w-100'>Change Password</button></Col>
             <Col sm={2} className='my-3'><button className='btn btn-danger w-100' onClick={e => { setUserEdited(userData) }}>Reset</button></Col>

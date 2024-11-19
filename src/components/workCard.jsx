@@ -93,7 +93,7 @@ const WorkCard = ({ workData,render }) => {
                                     
                                      {
                                           workData.status=='completed'?<Col sm={12} className='my-3'>
-                                          <button  className='btn btn-white p-2' onClick={e=>setRatsendRatinging(1)}><i className={`fa-solid fa-star ${rating>0?'text-warning':''}`}></i></button>
+                                          <button  className='btn btn-white p-2' onClick={e=>sendRating(1)}><i className={`fa-solid fa-star ${rating>0?'text-warning':''}`}></i></button>
                                           <button  className='btn btn-white p-2' onClick={e=>sendRating(2)}><i className={`fa-solid fa-star ${rating>1?'text-warning':''}`}></i></button>
                                           <button  className='btn btn-white p-2' onClick={e=>sendRating(3)}><i className={`fa-solid fa-star ${rating>2?'text-warning':''}`}></i></button>
                                           <button  className='btn btn-white p-2' onClick={e=>sendRating(4)}><i className={`fa-solid fa-star ${rating>3?'text-warning':''}`}></i></button>

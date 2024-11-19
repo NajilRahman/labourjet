@@ -120,11 +120,11 @@ const [works,setWorks]=useState([])
                               <Col sm={12} className='border-2 bg-light p-3 mt-4'>
                               <h5>Skills</h5>
       
-                              {userData?.skills?.map(obj=>{
+                              {userData?.skills?.map(obj=>(
                                    <Badge pill bg="dark" className='py-3 px-3 my-2' >
                                    <span>{obj}</span><span style={{ cursor: 'pointer' }} className='ms-4'>X</span>
                                    </Badge>
-                              })}
+                              ))}
                              
                              
       

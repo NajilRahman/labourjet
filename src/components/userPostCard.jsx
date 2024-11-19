@@ -32,7 +32,6 @@ useEffect(() => {
     postData('likeUpdate', { _id: post._id, viewerid: userData._id, reqType })
       .then(res => {
         setLiked(!liked)
-        reRender(res)
       })
   }
 
