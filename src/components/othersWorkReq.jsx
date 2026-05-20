@@ -1,60 +1,72 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { postData } from '../apiServices/apiServices'
 import toast from 'react-hot-toast'
 
-function OthersWorkReq({data,chatid}) {
+function OthersWorkReq({ data, chatid }) {
+  const [status, setStatus] = useState(data.status || 'Pending');
 
-  const workStatusUpdate=(req)=>{
-    if(req=='Approve')
-    {
-      postData('workStatusUpdate',{status:'Approved',chatid,workid:data.workid})
-      .then(res=>{
-        toast.success('Work Approved')
-        console.log(res.data)
-      })
-    }
-    else{
-      postData('workStatusUpdate',{status:'Rejected',chatid,workid:data.workid})
-      .then(res=>{
-        toast.success('Work Rejected')
-        console.log(res.data)
-      })
-    }
+  const workStatusUpdate = (req) => {
+    const newStatus = req === 'Approve' ? 'Approved' : 'Rejected';
+    postData('workStatusUpdate', { status: newStatus, chatid, workid: data.workid })
+      .then(res => {
+        toast.success(`Work ${newStatus}`);
+        setStatus(newStatus);
+      });
   }
+
   return (
-    <Row>
-     <Col sm={6}>
-        <div className=' my-2 d-flex justify-content-start ms-4 text-center '>
-        <section className="wrapper my-3 ">
-            <div className=" mb-4 ">
-              <div className="card shadow" >
-              <div className="card-body">
-                  <h5 className="card-title mt-0">
-                    <div className="text-dark" ><p>{data.workName}</p></div>
-                  </h5>
-                  <small className="card-meta mb-2 d-block">{data.description}</small>
-                  <small><i className="far fa-clock me-2"></i>{data.workdate}</small>
-                </div>
-                <div className="card-footer">
-
-                <Row>
-                     
-                        <Col> <button className='btn btn-danger'onClick={e=>workStatusUpdate('Reject')}>Reject</button></Col>
-                        <Col>
-                        <button className='btn btn-success' onClick={e=>workStatusUpdate('Approve')}>Approve</button>
-                      </Col>
-                    </Row>
-
-
-                </div>
-              </div>
+    <Row className="g-0 my-2">
+      <Col xs={10} sm={8} md={7}>
+        <div className="d-flex justify-content-start ps-2">
+          <div 
+            className="p-3 text-start text-white shadow-sm"
+            style={{
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.32) 0%, rgba(79, 70, 229, 0.25) 100%)',
+              border: '1px solid rgba(99, 102, 241, 0.45)',
+              borderRadius: '16px 16px 16px 4px',
+              minWidth: '240px',
+              maxWidth: '85%'
+            }}
+          >
+            <div className="d-flex align-items-center gap-2 mb-2 pb-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.18)' }}>
+              <i className="fa-solid fa-briefcase text-info fa-lg"></i>
+              <span className="fw-bold text-white" style={{ fontSize: '0.9rem' }}>Work Request Received</span>
             </div>
-          </section>      
+            <h6 className="fw-bold text-white mb-1">{data.workName}</h6>
+            <p className="text-white mb-2" style={{ fontSize: '0.85rem', lineHeight: '1.4', opacity: 0.9 }}>{data.description}</p>
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <small className="text-white" style={{ opacity: 0.85 }}><i className="far fa-clock me-1"></i>{data.workdate}</small>
+            </div>
+            
+            {status === 'Pending' ? (
+              <Row className="g-2 pt-2 border-top" style={{ borderColor: 'rgba(255,255,255,0.18)' }}>
+                <Col>
+                  <button className="btn btn-outline-danger w-100 rounded-pill py-1.5 fw-semibold" style={{ fontSize: '0.8rem' }} onClick={() => workStatusUpdate('Reject')}>
+                    Reject
+                  </button>
+                </Col>
+                <Col>
+                  <button className="btn btn-success w-100 rounded-pill py-1.5 fw-semibold border-0" style={{ fontSize: '0.8rem' }} onClick={() => workStatusUpdate('Approve')}>
+                    Approve
+                  </button>
+                </Col>
+              </Row>
+            ) : (
+              <div className="pt-2 border-top text-end" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                <span className={`badge py-1 px-2 rounded-pill ${
+                  status === 'Approved' ? 'bg-success text-white' : 'bg-danger text-white'
+                }`} style={{ fontSize: '0.7rem' }}>
+                  {status}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-     </Col>
-   </Row>
+      </Col>
+      <Col xs={2} sm={4} md={5}></Col>
+    </Row>
   )
 }
 
-export default OthersWorkReq
+export default OthersWorkReq;

@@ -1,29 +1,38 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-function SelfPaymentMessage({data,chatid}) {
+
+function SelfPaymentMessage({ data }) {
   return (
-    <Row>
-      <Col sm={6}>
-      </Col>
-      <Col sm={6}>
-        <div className=' my-2 d-flex justify-content-end ms-4 text-center '>
-          <section className="wrapper my-3 ">
-            <div className=" mb-4 ">
-              <div className="card shadow" >
-                <div className="card-body">
-                  <h5 className="card-title mt-0">
-                    <div className="text-dark" ><p>Payment Request</p></div>
-                  </h5>
-                  <big className="card-meta mb-2 d-block">{data.amount} INR</big>
-                </div>
-                
-              </div>
+    <Row className="g-0 my-2">
+      <Col xs={2} sm={4} md={5}></Col>
+      <Col xs={10} sm={8} md={7}>
+        <div className="d-flex justify-content-end pe-2">
+          <div 
+            className="p-3 text-start text-white shadow-sm"
+            style={{
+              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.25) 100%)',
+              border: '1px solid rgba(16, 185, 129, 0.4)',
+              borderRadius: '16px 16px 4px 16px',
+              minWidth: '220px',
+              maxWidth: '85%'
+            }}
+          >
+            <div className="d-flex align-items-center gap-2 mb-2 pb-2 border-bottom" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
+              <i className="fa-solid fa-indian-rupee-sign text-success fa-lg"></i>
+              <span className="fw-bold text-white" style={{ fontSize: '0.9rem' }}>Payment Requested</span>
             </div>
-          </section>       </div>
+            <div className="mb-2">
+              <small className="d-block text-white" style={{ fontSize: '0.75rem', opacity: 0.85 }}>Amount requested by you</small>
+              <h4 className="fw-bold text-white mb-0 mt-1">{data.amount} INR</h4>
+            </div>
+            <span className="badge bg-success-subtle text-success border border-success-subtle py-1 px-2" style={{ fontSize: '0.7rem' }}>
+              Pending Payment
+            </span>
+          </div>
+        </div>
       </Col>
     </Row>
   )
 }
 
-export default SelfPaymentMessage
+export default SelfPaymentMessage;

@@ -61,26 +61,26 @@ function AdminHome() {
             <Col sm={2} className='shadow d-flex justify-content-center align-items-center' style={{height:'86vh'}}>
                         <div>
                             <button className='btn btn-light w-100 my-3 ' onClick={()=>setState('dash')}>Dashboard</button>
-                            <button className='btn btn-light w-100 my-3 ' onClick={()=>setState('emp')}>Employee Managment</button>
-                            <button className='btn btn-light w-100 my-3 ' onClick={()=>setState('user')}>User Managment</button>
-                            <button className='btn btn-light w-100 my-3 ' onClick={()=>setState('stat')}>Statitics</button>
+                            <button className='btn btn-light w-100 my-3 ' onClick={()=>setState('emp')}>Employee Management</button>
+                            <button className='btn btn-light w-100 my-3 ' onClick={()=>setState('user')}>User Management</button>
+                            <button className='btn btn-light w-100 my-3 ' onClick={()=>setState('stat')}>Statistics</button>
                         </div>
 
             </Col>
             <Col sm={10} className='py-4  px-4' style={{height:'86vh',overflowX:'hidden',overflowY:'scroll'}}>
             {
-                state=='dash'||state=='dash'?
+                state=='dash'?
                 <>
                     <Statitics data={user} setRender={setRender}/>
                     <EmployeeMng data={user} setRender={setRender}/>
                     <UserMng data={user} setRender={setRender}/>
     
                 </>
-                :state=='dash'||state=='emp'?
+                :state=='emp'?
                 <EmployeeMng data={user} setRender={setRender}/>
-                :state=='dash'||state=='user'?
+                :state=='user'?
                 <UserMng data={user} setRender={setRender}/>
-                :state=='dash'||state=='stat'?
+                :state=='stat'?
                 <Statitics data={user} setRender={setRender}/>
                 :''
 

@@ -24,18 +24,19 @@ function Search({userData,render}) {
     
     return (
         <div className='p-2'>
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-4 shadow-sm" style={{ borderRadius: '10px', overflow: 'hidden' }}>
                 <Form.Control
-                    placeholder="Search Nearest Labour"
-                    aria-label=""
-                    aria-describedby="basic-addon2"
+                    placeholder="Search specialists (e.g. plumber, designer, state...)"
+                    aria-label="Search specialists"
+                    aria-describedby="button-addon2"
                     onChange={e=>setSearch(e.target.value)}
+                    style={{ borderRight: 'none' }}
                 />
-                <Button variant="outline-secondary" id="button-addon2" onClick={searchUser}>
-                    <i className="fa-solid fa-magnifying-glass text-black "></i>
+                <Button className="btn btn-primary d-flex align-items-center justify-content-center" id="button-addon2" onClick={searchUser}>
+                    <i className="fa-solid fa-magnifying-glass text-white"></i>
                 </Button>
             </InputGroup>
-            <div id='scroller' sm={12} md={6} className=' bg-white   p-1 ' style={{ maxHeight: '100vh ', overflowX: 'hidden', overflowY: 'scroll' }}>
+            <div id='scroller' className='p-1' style={{ maxHeight: '75vh', overflowX: 'hidden', overflowY: 'auto' }}>
             <Row>
                 {   loading?<div style={{height:'100vh'}}  className='d-flex justify-content-center align-items-center'><Loading/></div>
                     :

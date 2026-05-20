@@ -2,58 +2,72 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { postData } from '../apiServices/apiServices';
-import {toast} from 'react-hot-toast';
-const WorkCard = ({ workData,render }) => {
-    const id = JSON.parse(localStorage.getItem('user'))._id
+import { toast } from 'react-hot-toast';
+import io from 'socket.io-client';
 
-    const client = workData.recid == id ? workData.senderid : workData.recid
-    const [oppoUser, setOppoUser] = useState({})
-    const [rating,setRating]=useState(workData?.rating)
+const WorkCard = ({ workData, render }) => {
+    const id = JSON.parse(localStorage.getItem('user'))._id;
+    const client = workData.recid == id ? workData.senderid : workData.recid;
+    const [oppoUser, setOppoUser] = useState({});
+    const [rating, setRating] = useState(workData?.rating);
+    const [status, setStatus] = useState(workData.status);
+
+    // socket for realtime work status updates
+    const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000');
+    useEffect(() => {
+        // join the chat room associated with this work item
+        if (workData.chatid) socket.emit('joinChat', workData.chatid);
+        socket.on('workStatusUpdated', ({ workid, status: newStatus }) => {
+            if (workid === workData._id) {
+                setStatus(newStatus);
+                // optionally trigger parent refresh
+                render && render();
+            }
+        });
+        return () => {
+            socket.disconnect();
+        };
+    }, [workData.chatid, workData._id]);
+
     useEffect(() => {
         postData('user', { id: client })
             .then(res => {
-                setOppoUser(res.data)
-            })
-    }, [])
+                setOppoUser(res.data);
+            });
+    }, []);
 
-
-    const sendRating=(value)=>{
-        setRating(value)
-        postData('setRating',{_id:workData._id,rating:value})
-        .then(res=>{
-            toast.success('Rating Updated')
-            render(res.data)
-        })
-    }
+    const sendRating = (value) => {
+        setRating(value);
+        postData('setRating', { _id: workData._id, rating: value })
+            .then(res => {
+                toast.success('Rating Updated');
+                render(res.data);
+            });
+    };
 
     const workStatusUpdate = (req) => {
-        if (req == 'Approve') {
+        if (req === 'Approve') {
             postData('workStatusUpdate', { status: 'Approved', chatid: workData.chatid, workid: workData._id })
                 .then(res => {
-                    toast.success('Work Approved')
-                    render(res.data)
-                })
-        }
-        else {
+                    toast.success('Work Approved');
+                    render(res.data);
+                });
+        } else {
             postData('workStatusUpdate', { status: 'Rejected', chatid: workData.chatid, workid: workData._id })
                 .then(res => {
-                    toast.success('Work Rejected')
-                    render(res.data)
-                })
+                    toast.success('Work Rejected');
+                    render(res.data);
+                });
         }
-    }
-
+    };
 
     const workStatusUpdate1 = (req) => {
-
         postData('workStatusUpdate', { status: req, chatid: workData.chatid, workid: workData._id })
             .then(res => {
-                toast.success('Work Completed')
-                render(res.data)
-            })
-
-
-    }
+                toast.success('Work Completed');
+                render(res.data);
+            });
+    };
 
 
     return (
@@ -87,7 +101,7 @@ const WorkCard = ({ workData,render }) => {
                                 <Row>
                                     <Col>
                                        
-                                        <span className='my-5'>      <span>Work Status :</span>       <button className={`btn ${workData.status == 'Approved' ? `text-info` : workData.status == 'Rejected' ? `text-danger` : workData.status == 'completed' ? `text-success` : 'text-warning'}`}>{workData.status}</button></span>
+                                        <span className='my-5'><span>Work Status :</span> <span className={`badge bg-${status === 'Approved' ? 'info' : status === 'Rejected' ? 'danger' : status === 'completed' ? 'success' : 'warning'}`} style={{ cursor: 'default', transition: 'transform 0.2s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>{status}</span></span>
 
                                     </Col>
                                     
@@ -106,7 +120,7 @@ const WorkCard = ({ workData,render }) => {
                                  : <>
                                     <Row>
                                         <Col sm={12} className='mb-3'>
-                                            <span>      <span>Work Status :</span>       <button className={`btn ${workData.status == 'Approved' ? `text-info` : workData.status == 'Rejected' ? `text-danger` : workData.status == 'completed' ? `text-success` : 'text-warning'}`}>{workData.status}</button></span>
+                                            <span>      <span>Work Status :</span> <span className={`badge bg-${status === 'Approved' ? 'info' : status === 'Rejected' ? 'danger' : status === 'completed' ? 'success' : 'warning'}`} style={{ cursor: 'default', transition: 'transform 0.2s' }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>{status}</span></span>
                                         </Col>
                                         {
 

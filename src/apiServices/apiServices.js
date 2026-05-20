@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-// const baseURL= `http://localhost:3000/`
-const baseURL= `https://labourjet-backend.onrender.com/`
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000/'
 
 export const postData=(path,data)=>axios.post(`${baseURL}${path}`,data)
 

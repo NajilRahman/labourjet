@@ -6,10 +6,10 @@ function EmployeeMng({data,setRender}) {
 
   return (
     <div>
-      <h1 className='text-center mb-5'>employee Management</h1>
+      <h1 className='text-center mb-5'>Employee Management</h1>
 
 
-      <table className='table table-responsive table-light table-hover'>
+      <table className='table table-responsive table-hover'>
         <thead>
             <tr>
             <th>User Name</th>

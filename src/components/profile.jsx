@@ -1,381 +1,483 @@
-import React from 'react'
-import { Col, Row, Badge, Button, Modal } from 'react-bootstrap'
-import { useState, useEffect } from 'react'
-import OwnPostCard from './ownPostCard'
-import { postData, putData } from '../apiServices/apiServices'
-import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
-import Loading from './spinner'
+import React, { useState, useEffect } from 'react';
+import { Col, Row, Badge, Button, Modal, Spinner } from 'react-bootstrap';
+import OwnPostCard from './ownPostCard';
+import { postData, putData } from '../apiServices/apiServices';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import Loading from './spinner';
+
 function Profile({ userData, render }) {
-  //user data
-  const viewerid=JSON.parse(localStorage.getItem('user'))._id
-  const [user, setUser] = useState(userData)
-  const [userEdited, setUserEdited] = useState(userData)
-  // modal handel
+  const viewerid = JSON.parse(localStorage.getItem('user'))?._id;
+  const [user, setUser] = useState(userData);
+  const [userEdited, setUserEdited] = useState(userData);
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setUserEdited(userData);
+  };
   const handleShow = () => setShow(true);
 
-  // modal handel 2
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
 
-  //works
-const [works,setWorks]=useState([])
+  const [works, setWorks] = useState([]);
+  const [reRender, setReRender] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [addPost, setAddPost] = useState({
+    imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0aQSskeO3CT-d7TlGa7S7xY47gNkCvj8QNQ&s',
+    userid: userData?._id,
+    description: '',
+    liked: []
+  });
+  const [userPost, setUserPost] = useState([]);
+  const [rating, setRating] = useState(0);
+  const navi = useNavigate();
 
-//rerender
-const [reRender,setReRender]=useState('')
-
-  const [loading,setLoading]=useState(true)
-  //add post
-  const data = new Date()
-  const [addPost, setAddPost] = useState({ imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0aQSskeO3CT-d7TlGa7S7xY47gNkCvj8QNQ&s', userid: userData._id, description: '', liked: [] })
-  const [userPost, setUserPost] = useState([])
-  const [rating,setRating]=useState(0)
-  const navi = useNavigate()
-
-//skill add
-const [skills,setSkills]=useState(user.skills)
-const [skill,setSkill]=useState('')
-  
+  const [skills, setSkills] = useState(user?.skills || []);
+  const [skill, setSkill] = useState('');
 
   useEffect(() => {
-    //fetch userPost
-    setLoading(true)
-
-    postData('fetchUserPost', {viewerid})
-
+    setLoading(true);
+    postData('fetchUserPost', { viewerid })
       .then(res => {
-        setUserPost(res.data.reverse())
-        setLoading(false)
-        render(res)
-      })
+        setUserPost(res.data.reverse());
+        setLoading(false);
+        render(res);
+      });
+  }, [reRender]);
 
-       
-
-  }, [reRender])
-
-  useEffect(()=>{
-    setLoading(true)
-    postData('getWorksData',{id:viewerid})
-    .then(res=>{
-      setWorks(res.data.reverse())
-      setRating(Math.round(res.data.reduce((prev,next)=>prev=prev+next.rating,0)/works.length))
-      setLoading(false)
-    })
-  },[reRender])
-
-
-
-  
+  useEffect(() => {
+    setLoading(true);
+    postData('getWorksData', { id: viewerid })
+      .then(res => {
+        setWorks(res.data.reverse());
+        if (res.data.length > 0) {
+          setRating(Math.round(res.data.reduce((prev, next) => prev + next.rating, 0) / res.data.length));
+        } else {
+          setRating(0);
+        }
+        setLoading(false);
+      });
+  }, [reRender]);
 
   const updateimg = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader;
+    if (!file) return;
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      setUserEdited({ ...user, imgUrl: reader.result })
-    }
-  }
+      setUserEdited({ ...userEdited, imgUrl: reader.result });
+    };
+  };
+
   const updatePost = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader;
+    if (!file) return;
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      setAddPost({ ...addPost, imgUrl: '' })
-      setAddPost({ ...addPost, imgUrl: reader.result })
-    }
-  }
-
+      setAddPost({ ...addPost, imgUrl: reader.result });
+    };
+  };
 
   const uploadPost = () => {
-    setLoading(true)
+    setLoading(true);
     postData('uploadPost', addPost)
       .then(res => {
-        toast.success('Post Uploaded')
-        setLoading(false)
-
-        setAddPost({ imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0aQSskeO3CT-d7TlGa7S7xY47gNkCvj8QNQ&s', userid: userData._id, description: '' })
-        handleClose2()
-        setReRender(res)
-        render(res)
+        toast.success('Post Uploaded');
+        setLoading(false);
+        setAddPost({
+          imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0aQSskeO3CT-d7TlGa7S7xY47gNkCvj8QNQ&s',
+          userid: userData?._id,
+          description: '',
+          liked: []
+        });
+        handleClose2();
+        setReRender(res);
+        render(res);
       })
       .catch(err => {
-        setLoading(false)
-        toast.error('post upload failed')
-      })
-  }
-
+        setLoading(false);
+        toast.error('Post upload failed');
+      });
+  };
 
   const updateProfile = () => {
-    setLoading(true)
-
-    if (userEdited.phone != '' && userEdited.userName != '' && userEdited.postal != '') {
-      putData('profileupdate', {...userEdited,skills:skills})
+    setLoading(true);
+    if (userEdited.phone !== '' && userEdited.userName !== '' && userEdited.postal !== '') {
+      putData('profileupdate', { ...userEdited, skills: skills })
         .then(res => {
-          render(res)
-          setLoading(false)
-
-          toast.success('profile Updated')
-          handleClose()
+          render(res);
+          setLoading(false);
+          toast.success('Profile Updated');
+          handleClose();
         })
+        .catch(err => {
+          setLoading(false);
+          toast.error('Update failed');
+        });
+    } else {
+      toast.error('Fill in all fields');
+      setLoading(false);
     }
-    else {
-      toast.error('fill All Input')
-      setLoading(false)
+  };
 
-    }
-
-  }
-
+  const defaultAvatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80';
 
   return (
-    <div className=' bg-white  mb-2 px-3 py-2  w-100 rounded-1 text-center ' style={{ height: 'max-content' }}>
-     {
-      loading==true?      <div style={{height:'100vh'}}  className='d-flex justify-content-center align-items-center'><Loading/></div>
-
-      : <Row>
-      <Col sm={6}>
-        <Row>
-          <Col sm={12} className='d-flex justify-content-center py-3'>
-            <div className='rounded-pill' style={{ width: '150px', height: '150px', backgroundImage: `url(${userData.imgUrl ? userData.imgUrl : userEdited.imgUrl != '' ? userEdited.imgUrl : 'https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg'} )`, backgroundSize: 'cover' }}></div>
+    <div className="card bg-glass border-0 p-4 mb-4 text-start" style={{ height: 'max-content' }}>
+      {loading ? (
+        <div style={{ height: '50vh' }} className="d-flex justify-content-center align-items-center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
+        <Row className="g-4">
+          <Col md={4} className="text-center text-md-start">
+            <div className="d-flex flex-column align-items-center">
+              <img
+                className="rounded-circle border border-3 border-primary mb-3 shadow-lg"
+                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                src={userData?.imgUrl || defaultAvatar}
+                alt={userData?.userName}
+              />
+              <h4 className="fw-bold mb-1 d-flex align-items-center gap-2 justify-content-center">
+                {userData?.userName}
+                {userData?.userType === 'employee' && (
+                  <i className="fa-solid fa-circle-check text-info fa-xs" title="Verified Specialist"></i>
+                )}
+              </h4>
+              {userData?.userType === 'employee' && (
+                <div className="d-flex gap-1 my-2">
+                  {[...Array(5)].map((_, i) => (
+                    <i
+                      key={i}
+                      className={`fa-solid fa-star ${i < rating ? 'text-warning' : 'text-muted'}`}
+                    ></i>
+                  ))}
+                  <span className="ms-2 text-muted" style={{ fontSize: '0.85rem' }}>({works.length} reviews)</span>
+                </div>
+              )}
+            </div>
           </Col>
-          <Col className='ms-2 text-black mb-1 fs-4' style={{fontWeight:'800'}}>{userData.userName}{userData.userType=='employee'?<svg className='ms-2' style={{width:'30px'}} id="Capa_1" enable-background="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g><g><path d="m256 512c-66.012-37.684-225-151.29-225-377.76v-73.14h15c34.673 1.377 118.623-.163 201.68-55.548l8.32-5.552 8.32 5.552c83.159 55.444 167.314 56.779 199.424 55.607l17.256-.159v73.24c0 267.383-221.99 374.756-225 377.76z" fill="#f0f7ff"/></g><path d="m481 134.24v-73.24l-17.256.159c-32.109 1.172-116.265-.163-199.424-55.607l-8.32-5.552v512c3.01-3.005 225-110.379 225-377.76z" fill="#c7cfe1"/><g><g><path d="m256 443.38c-2.617-3-165-99.914-165-309.141v-13.374l13.286-2.432c50.859-5.874 99.507-21.196 144.58-45.571l7.134-3.852 7.134 3.853c45.073 24.375 93.721 39.697 144.58 45.571l13.286 1.524v13.374c0 205.199-162.252 306.898-165 310.048z" fill="#7ed8f6"/></g></g><path d="m421 133.332v-13.374l-13.286-1.523c-50.859-5.874-99.507-21.196-144.58-45.571l-7.134-3.854v374.37c2.748-3.151 165-104.849 165-310.048z" fill="#4895ff"/><g id="Shield_2_"><g><path d="m241 307.311-55.605-55.605 21.21-21.211 34.395 34.394 79.395-79.394 21.21 21.211z" fill="#f0f7ff"/></g></g><path d="m256 292.311 85.605-85.605-21.21-21.211-64.395 64.394z" fill="#c7cfe1"/></g></svg>:''} </Col>
-          {
-            userData.userType=='employee'?
-            <Col sm={12} className='text-center'>
-                                     <span>
-                                          <button  className='btn btn-white p-2'><i className={`fa-solid fa-star ${rating>0?'text-warning':''}`}></i></button>
-                                          <button  className='btn btn-white p-2'><i className={`fa-solid fa-star ${rating>1?'text-warning':''}`}></i></button>
-                                          <button  className='btn btn-white p-2'><i className={`fa-solid fa-star ${rating>2?'text-warning':''}`}></i></button>
-                                          <button  className='btn btn-white p-2'><i className={`fa-solid fa-star ${rating>3?'text-warning':''}`}></i></button>
-                                          <button  className='btn btn-white p-2'><i className={`fa-solid fa-star ${rating>4?'text-warning':''}`}></i></button>
-                                          <span  style={{fontSize:'10px',fontWeight:'800'}}>{works.length}</span>
-                                     </span>
-                                    </Col>
-                                    :<></>
-          }
-        </Row>
-       
-      </Col>
-      
-      <Col sm={6} className='d-flex justify-content-center align-items-center'>
-        <Row  className=' mt-3'>
-          
-          <Col className=''><span className='d-block' style={{fontWeight:'600'}}>{userPost.length}</span><span style={{fontWeight:'600',color:'black'}}>Posts</span></Col>
-          <Col className='mx-2'><span className='d-block' style={{fontWeight:'600'}}>{userData.follower.length}</span><span style={{fontWeight:'600',color:'black'}}>Followers</span></Col>
-          {
-            userData.userType != 'user' ? <Col><span className='d-block' style={{fontWeight:'600'}}>{userData.jobRole}</span><span style={{fontWeight:'600',color:'black'}}>Job</span></Col> : <></>
-          }
 
-          {
-            userData.userType != 'user' ? <Col sm={12} className='border-2 bg-light p-3 mt-4'>
-
-              <h5>Skills</h5>
-             {
-              userData.skills.map(obj=>(
-                <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                <span>{obj}</span>
-              </Badge>
-              ))
-             }
-              
-            </Col> : <></>
-          }
-
-        </Row>
-      </Col>
-      
-      <Col sm={12} className='my-4 text-center'>
-        <Row>
-
-          <Col sm={6} className='  text-black d-block my-2 '><i className="fa-regular fa-envelope fa-lg me-2"></i>{userData.email}</Col>
-          <Col sm={6} className=' text-black my-2 '><i className="fa-solid fa-phone fa-lg me-2"></i>{userData.phone}</Col>
-          <Col sm={6} className=' text-black  my-2'><i className="fa-solid fa-envelopes-bulk fa-lg me-2"></i>{userData.postal}</Col>
-          <Col sm={6} className='  text-black my-2 '><i className="fa-solid fa-location-dot fa-lg me-2"></i>{userData.state} ,india</Col>
-        </Row>
-
-      </Col>
-
-      <Col sm={6}><button className='btn btn-primary p-1 mt-3 w-100' onClick={e => handleShow()}>Edit Profile</button></Col>
-      <Col sm={6}><button className='btn btn-danger p-1 mt-3 w-100' onClick={e => {
-        navi('/')
-        toast.success('logged out')
-        localStorage.setItem('user', '')
-      }}>Logout</button></Col>
-
-      <Col sm={12}><button className='btn btn-info p-1 mt-3 w-100' onClick={e => handleShow2()}><i class="fa-solid fa-square-plus me-2"></i>add Post</button></Col>
-
-      <Row className='my-5 border-2 '>
-        {
-          userPost.length > 0
-            ?
-            userPost.map(obj => (
-              <Col sm={6}><OwnPostCard post={obj} userData={userData} render={render} reRender={setReRender} /></Col>
-            ))
-
-            : <h3 className='text-center'>no post to show</h3>
-        }
-
-
-      </Row>
-
-    </Row>
-     }
-      
-
-
-
-
-
-      {/* modal edit profile */}
-
-
-      <Modal show={show} fullscreen={true} onHide={() => { setShow(false); setUserEdited(userData) }}>
-        <Modal.Header closeButton>
-          Edit Profile
-        </Modal.Header>
-        <Modal.Body className='text-center px-5'>
-          {
-            loading? <Loading/>
-            :<Row>
-            <Col sm={12}>
-              <input type="file" id='profilepic' onChange={updateimg} style={{ display: 'none' }} />
-              <label htmlFor='profilepic'>
-                <Col sm={12} className='py-3'>
-                  <div className='rounded-pill' style={{ width: '150px', height: '150px', backgroundImage: `url(${userEdited.imgUrl != '' ? userEdited.imgUrl : userData.imgUrl ? userData.imgUrl : 'https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg'} )`, backgroundSize: 'cover' }}></div>
-                </Col>
-              </label>
-            </Col>
-            <Col sm={6}>
-              <div data-mdb-input-init className="form-outline mb-4">
-                <input type="text" className="form-control" value={userEdited.userName} onChange={e => setUserEdited({ ...userEdited, userName: e.target.value })} />
+          <Col md={8}>
+            <div className="d-flex flex-wrap justify-content-around text-center p-3 rounded bg-glass border mb-4">
+              <div>
+                <span className="d-block fs-4 fw-bold">{userPost.length}</span>
+                <span className="text-muted" style={{ fontSize: '0.85rem' }}>Posts</span>
               </div>
-            </Col>
-            <Col sm={6}>
-              <div data-mdb-input-init className="form-outline mb-4">
-                <input type="email" className="form-control" value={userEdited.email} onChange={e => setUserEdited({ ...userEdited, email: e.target.value })} disabled />
+              <div>
+                <span className="d-block fs-4 fw-bold">{userData?.follower?.length || 0}</span>
+                <span className="text-muted" style={{ fontSize: '0.85rem' }}>Followers</span>
               </div>
-            </Col>
-            <Col sm={3}>
-              <div data-mdb-input-init className="form-outline mb-4">
-                <input type="number" className="form-control" value={userEdited.postal} onChange={e => setUserEdited({ ...userEdited, postal: e.target.value })} />
-              </div>
-            </Col>
-            <Col sm={6}>
-              <div data-mdb-input-init className="form-outline mb-4">
-                <input type="text" className="form-control" value={userEdited.phone} onChange={e => setUserEdited({ ...userEdited, phone: e.target.value })} />
-              </div>
-            </Col>
-            <Col>
-              <select id="inputState" className="form-select" value={userEdited.state} onChange={e => setUserEdited({ ...userEdited, state: e.target.value })}>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                <option value="Assam">Assam</option>
-                <option value="Bihar">Bihar</option>
-                <option value="Chhattisgarh">Chhattisgarh</option>
-                <option value="Goa">Goa</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Himachal Pradesh">Himachal Pradesh</option>
-                <option value="Jharkhand">Jharkhand</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Kerala">Kerala</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Manipur">Manipur</option>
-                <option value="Meghalaya">Meghalaya</option>
-                <option value="Mizoram">Mizoram</option>
-                <option value="Nagaland">Nagaland</option>
-                <option value="Odisha">Odisha</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Sikkim">Sikkim</option>
-                <option value="Tamil Nadu">Tamil Nadu</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Tripura">Tripura</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Uttarakhand">Uttarakhand</option>
-                <option value="West Bengal">West Bengal</option>
+              {userData?.userType !== 'user' && (
+                <div>
+                  <span className="d-block fs-4 fw-bold text-truncate" style={{ maxWidth: '150px' }}>{userData?.jobRole}</span>
+                  <span className="text-muted" style={{ fontSize: '0.85rem' }}>Job Role</span>
+                </div>
+              )}
+            </div>
 
-              </select>
+            {userData?.userType !== 'user' && userData?.skills?.length > 0 && (
+              <div className="mb-4">
+                <h6 className="text-muted mb-2">Skills & Certifications</h6>
+                <div className="d-flex flex-wrap gap-2">
+                  {userData.skills.map((obj, idx) => (
+                    <Badge key={idx} pill bg="primary" className="py-2 px-3">
+                      {obj}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            </Col>
-           {userData.userType!='user'? <>
-            <Col sm={8}>
-               <input className='form-control' type='text' placeholder='type skill ...'value={skill} onChange={e => setSkill( e.target.value )}></input> 
+            <div className="row g-3 text-start">
+              <Col sm={6} className="d-flex align-items-center gap-2">
+                <i className="fa-regular fa-envelope text-primary"></i>
+                <span className="text-truncate">{userData?.email}</span>
               </Col>
-              <Col sm={4}>
-              <button className='btn text-white bg-black w-100' onClick={e=>{setSkills([...skills,skill])}}>add Skill</button>
+              <Col sm={6} className="d-flex align-items-center gap-2">
+                <i className="fa-solid fa-phone text-primary"></i>
+                <span>{userData?.phone}</span>
               </Col>
-              <Col sm={12} className='border-2 bg-light p-3 mt-4'>
-  
-                <h5>Skills</h5>
-               {
-                skills?.map(obj=>(
-                  <Badge pill bg="dark" className='py-3 px-3 my-2' >
-                  <span>{obj}<span className='ms-3' onClick={e=>{      setSkills( skills.filter(item=>item!=obj) ) }} style={{cursor:'pointer'}}>x</span></span>
-                </Badge>
+              <Col sm={6} className="d-flex align-items-center gap-2">
+                <i className="fa-solid fa-envelopes-bulk text-primary"></i>
+                <span>{userData?.postal}</span>
+              </Col>
+              <Col sm={6} className="d-flex align-items-center gap-2">
+                <i className="fa-solid fa-location-dot text-primary"></i>
+                <span>{userData?.state}, India</span>
+              </Col>
+            </div>
+          </Col>
+
+          <Col sm={12}>
+            <div className="d-flex flex-wrap flex-md-nowrap gap-3">
+              <button className="btn btn-primary flex-grow-1" style={{ minWidth: '140px' }} onClick={handleShow}>
+                Edit Profile
+              </button>
+              <button className="btn btn-light flex-grow-1" style={{ minWidth: '140px' }} onClick={handleShow2}>
+                <i className="fa-solid fa-square-plus me-2"></i>New Post
+              </button>
+              <button className="btn btn-light text-danger border-danger flex-grow-1" style={{ minWidth: '140px' }} onClick={() => {
+                localStorage.setItem('user', '');
+                navi('/Login');
+                toast.success('Logged Out');
+              }}>
+                Logout
+              </button>
+            </div>
+          </Col>
+
+          {/* User Posts Row */}
+          <Col sm={12} className="mt-4">
+            <h5 className="mb-3 text-gradient">Your Publications</h5>
+            <Row className="g-4">
+              {userPost.length > 0 ? (
+                userPost.map(obj => (
+                  <Col md={6} key={obj._id}>
+                    <OwnPostCard post={obj} userData={userData} render={render} reRender={setReRender} />
+                  </Col>
                 ))
-               }
+              ) : (
+                <div className="col-12 py-5 text-center bg-glass border rounded-3">
+                  <i className="fa-regular fa-images fa-3x text-muted mb-3"></i>
+                  <p className="text-muted mb-0">No posts shared yet</p>
+                </div>
+              )}
+            </Row>
+          </Col>
+        </Row>
+      )}
+
+      {/* Edit Profile Modal */}
+      <Modal show={show} onHide={handleClose} size="lg" centered contentClassName="modal-glass border-0 shadow-lg" backdropClassName="glass-backdrop">
+        <Modal.Header closeButton closeVariant="white" className="border-0 pt-4 pb-3 px-4">
+          <Modal.Title className="fw-bold text-white">Edit Profile Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="px-4 pb-4">
+          {loading ? (
+            <div className="d-flex justify-content-center py-5">
+              <Spinner animation="border" variant="light" />
+            </div>
+          ) : (
+            <Row className="g-3">
+              <Col sm={12} className="text-center mb-3">
+                <input type="file" id="profilepic" onChange={updateimg} style={{ display: 'none' }} />
+                <label htmlFor="profilepic" style={{ cursor: 'pointer' }}>
+                  <img
+                    className="rounded-circle border border-3 border-primary hover-scale shadow"
+                    style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                    src={userEdited?.imgUrl || defaultAvatar}
+                    alt="Upload profile preview"
+                  />
+                  <small className="d-block text-white opacity-70 mt-2">Click to change picture</small>
+                </label>
               </Col>
-    </>
-            :''
-            }
-            <Col sm={5} className='my-3'><button className='btn btn-success w-100' onClick={updateProfile}>Save Changes</button></Col>
-            <Col sm={5} className='my-3'><button className='btn btn-info w-100'>Change Password</button></Col>
-            <Col sm={2} className='my-3'><button className='btn btn-danger w-100' onClick={e => { setUserEdited(userData) }}>Reset</button></Col>
-          </Row>
-}
+              <Col md={6} className="text-start">
+                <label className="form-label text-white opacity-75 fw-500 mb-1">Username</label>
+                <input
+                  type="text"
+                  className="form-control border-0 text-white"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '10px 16px' }}
+                  value={userEdited?.userName || ''}
+                  onChange={e => setUserEdited({ ...userEdited, userName: e.target.value })}
+                />
+              </Col>
+              <Col md={6} className="text-start">
+                <label className="form-label text-white opacity-75 fw-500 mb-1">Email (Disabled)</label>
+                <input
+                  type="email"
+                  className="form-control border-0 text-white-50"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '10px 16px', cursor: 'not-allowed', opacity: '0.6' }}
+                  value={userEdited?.email || ''}
+                  disabled
+                />
+              </Col>
+              <Col md={6} className="text-start">
+                <label className="form-label text-white opacity-75 fw-500 mb-1">Phone</label>
+                <input
+                  type="text"
+                  className="form-control border-0 text-white"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '10px 16px' }}
+                  value={userEdited?.phone || ''}
+                  onChange={e => setUserEdited({ ...userEdited, phone: e.target.value })}
+                />
+              </Col>
+              <Col md={6} className="text-start">
+                <label className="form-label text-white opacity-75 fw-500 mb-1">Postal Code</label>
+                <input
+                  type="number"
+                  className="form-control border-0 text-white"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '10px 16px' }}
+                  value={userEdited?.postal || ''}
+                  onChange={e => setUserEdited({ ...userEdited, postal: e.target.value })}
+                />
+              </Col>
+              <Col md={12} className="text-start">
+                <label className="form-label text-white opacity-75 fw-500 mb-1">State</label>
+                <select
+                  className="form-select border-0 text-white"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '10px 16px' }}
+                  value={userEdited?.state || 'Andhra Pradesh'}
+                  onChange={e => setUserEdited({ ...userEdited, state: e.target.value })}
+                >
+                  <option value="Andhra Pradesh" style={{ background: '#1e1b4b', color: '#fff' }}>Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh" style={{ background: '#1e1b4b', color: '#fff' }}>Arunachal Pradesh</option>
+                  <option value="Assam" style={{ background: '#1e1b4b', color: '#fff' }}>Assam</option>
+                  <option value="Bihar" style={{ background: '#1e1b4b', color: '#fff' }}>Bihar</option>
+                  <option value="Chhattisgarh" style={{ background: '#1e1b4b', color: '#fff' }}>Chhattisgarh</option>
+                  <option value="Goa" style={{ background: '#1e1b4b', color: '#fff' }}>Goa</option>
+                  <option value="Gujarat" style={{ background: '#1e1b4b', color: '#fff' }}>Gujarat</option>
+                  <option value="Haryana" style={{ background: '#1e1b4b', color: '#fff' }}>Haryana</option>
+                  <option value="Himachal Pradesh" style={{ background: '#1e1b4b', color: '#fff' }}>Himachal Pradesh</option>
+                  <option value="Jharkhand" style={{ background: '#1e1b4b', color: '#fff' }}>Jharkhand</option>
+                  <option value="Karnataka" style={{ background: '#1e1b4b', color: '#fff' }}>Karnataka</option>
+                  <option value="Kerala" style={{ background: '#1e1b4b', color: '#fff' }}>Kerala</option>
+                  <option value="Madhya Pradesh" style={{ background: '#1e1b4b', color: '#fff' }}>Madhya Pradesh</option>
+                  <option value="Maharashtra" style={{ background: '#1e1b4b', color: '#fff' }}>Maharashtra</option>
+                  <option value="Manipur" style={{ background: '#1e1b4b', color: '#fff' }}>Manipur</option>
+                  <option value="Meghalaya" style={{ background: '#1e1b4b', color: '#fff' }}>Meghalaya</option>
+                  <option value="Mizoram" style={{ background: '#1e1b4b', color: '#fff' }}>Mizoram</option>
+                  <option value="Nagaland" style={{ background: '#1e1b4b', color: '#fff' }}>Nagaland</option>
+                  <option value="Odisha" style={{ background: '#1e1b4b', color: '#fff' }}>Odisha</option>
+                  <option value="Punjab" style={{ background: '#1e1b4b', color: '#fff' }}>Punjab</option>
+                  <option value="Rajasthan" style={{ background: '#1e1b4b', color: '#fff' }}>Rajasthan</option>
+                  <option value="Sikkim" style={{ background: '#1e1b4b', color: '#fff' }}>Sikkim</option>
+                  <option value="Tamil Nadu" style={{ background: '#1e1b4b', color: '#fff' }}>Tamil Nadu</option>
+                  <option value="Telangana" style={{ background: '#1e1b4b', color: '#fff' }}>Telangana</option>
+                  <option value="Tripura" style={{ background: '#1e1b4b', color: '#fff' }}>Tripura</option>
+                  <option value="Uttar Pradesh" style={{ background: '#1e1b4b', color: '#fff' }}>Uttar Pradesh</option>
+                  <option value="Uttarakhand" style={{ background: '#1e1b4b', color: '#fff' }}>Uttarakhand</option>
+                  <option value="West Bengal" style={{ background: '#1e1b4b', color: '#fff' }}>West Bengal</option>
+                </select>
+              </Col>
+
+              {userData?.userType !== 'user' && (
+                <>
+                  <Col md={8} className="text-start">
+                    <label className="form-label text-white opacity-75 fw-500 mb-1">Add Skill</label>
+                    <input
+                      className="form-control border-0 text-white"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '10px 16px' }}
+                      type="text"
+                      placeholder="e.g. Piping, Wiring"
+                      value={skill}
+                      onChange={e => setSkill(e.target.value)}
+                    />
+                  </Col>
+                  <Col md={4} className="d-flex align-items-end">
+                    <button
+                      className="btn btn-primary w-100 rounded-pill px-4 border-0"
+                      type="button"
+                      onClick={() => {
+                        if (skill) {
+                          setSkills([...skills, skill]);
+                          setSkill('');
+                        }
+                      }}
+                    >
+                      Add Skill
+                    </button>
+                  </Col>
+                  <Col sm={12} className="text-start mt-3">
+                    <label className="form-label text-white opacity-75 fw-500 mb-1">Your Skills</label>
+                    <div className="d-flex flex-wrap gap-2 p-3 rounded-4 bg-glass border" style={{ borderColor: 'rgba(255,255,255,0.08) !important' }}>
+                      {skills.length > 0 ? (
+                        skills.map((obj, idx) => (
+                          <Badge key={idx} pill bg="primary" className="py-2 px-3 border-0">
+                            {obj}
+                            <span
+                              className="ms-2"
+                              style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                              onClick={() => setSkills(skills.filter(item => item !== obj))}
+                            >
+                              ×
+                            </span>
+                          </Badge>
+                        ))
+                      ) : (
+                        <small className="text-white opacity-50">No skills listed</small>
+                      )}
+                    </div>
+                  </Col>
+                </>
+              )}
+            </Row>
+          )}
         </Modal.Body>
+        <Modal.Footer className="border-0 p-3 px-4 gap-2">
+          <Button variant="secondary" className="rounded-pill px-4 border-0" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" className="rounded-pill px-4 border-0" onClick={updateProfile}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
       </Modal>
 
-
-      {/* add post modal */}
-      <Modal
-        show={show2}
-        onHide={handleClose2}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Add Post</Modal.Title>
+      {/* Add Post Modal */}
+      <Modal show={show2} onHide={handleClose2} centered contentClassName="modal-glass border-0 shadow-lg" backdropClassName="glass-backdrop">
+        <Modal.Header closeButton closeVariant="white" className="border-0 pt-4 pb-3 px-4">
+          <Modal.Title className="fw-bold text-white">Share new update</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-
-
-          {
-            loading?<div style={{height:'40vh'}}  className='d-flex justify-content-center align-items-center'><Loading/></div>
-            :<Row>
-            <Col sm={6}>
-              <input type="file" id='addpost' onChange={updatePost} style={{ display: 'none' }} />
-
-              <label htmlFor='addpost'>
-                <div className='py-3'>
-                  <div className='' style={{ width: '150px', height: '150px', backgroundImage: `url(${addPost.imgUrl != '' ? addPost.imgUrl : 'https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg'} )`, backgroundSize: 'cover' }}></div>
-                </div>
-              </label>
-            </Col>
-            <Col sm={6} className='d-flex justify-centent-center align-items-center'>
-              <div data-mdb-input-init className="form-outline ">
-                <textarea type="text" className="form-control w-100" style={{ height: '20vh' }} value={addPost.description} onChange={e => setAddPost({ ...addPost, description: e.target.value })} placeholder='Description' />
-              </div>
-            </Col>
-
-          </Row>
-          }
-          
-          
+        <Modal.Body className="px-4 pb-3">
+          {loading ? (
+            <div className="d-flex justify-content-center py-5">
+              <Spinner animation="border" variant="light" />
+            </div>
+          ) : (
+            <Row className="g-3">
+              <Col sm={12} className="text-center">
+                <input type="file" id="addpost" onChange={updatePost} style={{ display: 'none' }} />
+                <label htmlFor="addpost" style={{ cursor: 'pointer' }} className="w-100">
+                  <div
+                    className="border border-dashed rounded-3 p-4 hover-scale d-flex flex-column align-items-center justify-content-center"
+                    style={{ minHeight: '180px', backgroundColor: 'rgba(255,255,255,0.02)', borderColor: 'rgba(255,255,255,0.15)' }}
+                  >
+                    {addPost.imgUrl ? (
+                      <img
+                        src={addPost.imgUrl}
+                        alt="Upload preview"
+                        className="rounded"
+                        style={{ maxHeight: '150px', maxWidth: '100%', objectFit: 'contain' }}
+                      />
+                    ) : (
+                      <>
+                        <i className="fa-solid fa-cloud-arrow-up fa-2x text-white opacity-50 mb-2"></i>
+                        <small className="text-white opacity-50">Click to browse media file</small>
+                      </>
+                    )}
+                  </div>
+                </label>
+              </Col>
+              <Col sm={12} className="text-start">
+                <label className="form-label text-white opacity-75 fw-500 mb-1">Write caption</label>
+                <textarea
+                  className="form-control border-0 text-white"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '10px 16px' }}
+                  rows={4}
+                  value={addPost.description}
+                  onChange={e => setAddPost({ ...addPost, description: e.target.value })}
+                  placeholder="Share details of your completed works or requirements..."
+                />
+              </Col>
+            </Row>
+          )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={uploadPost}>Post</Button>
+        <Modal.Footer className="border-0 p-3 px-4 gap-2">
+          <Button variant="secondary" className="rounded-pill px-4 border-0" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} onClick={handleClose2}>
+            Cancel
+          </Button>
+          <Button variant="primary" className="rounded-pill px-4 border-0" onClick={uploadPost}>
+            Publish Post
+          </Button>
         </Modal.Footer>
       </Modal>
 
     </div>
-
-  )
+  );
 }
 
-export default Profile
+export default Profile;

@@ -1,10 +1,533 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
-  font-family: "Space Grotesk", system-ui;
-  font-optical-sizing: auto;
-  font-style: normal;
+:root {
+  --bg-primary: #030712;
+  --bg-dark: #0f172a;
+  --bg-surface: rgba(17, 24, 39, 0.65);
+  --primary-glow: #4f46e5;
+  --secondary-glow: #0ea5e9;
+  --accent-purple: #8b5cf6;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-glass-hover: rgba(255, 255, 255, 0.25);
+  --shadow-neon: 0 0 20px rgba(79, 70, 229, 0.3);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --blur-heavy: blur(24px) saturate(160%);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .brand-text {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+body {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-primary) !important;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated Aurora Background */
+body::before, body::after {
+  content: "";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-weight: 700;
+  color: var(--text-primary) !important;
+}
+
+p, span, label, div {
+  color: var(--text-primary);
+}
+
+.text-muted {
+  color: var(--text-secondary) !important;
+}
+
+/* Base App Container with Aurora Background */
+.App {
+  min-height: 100vh;
+  position: relative;
+  background: radial-gradient(circle at 15% 30%, rgba(98, 0, 234, 0.25), transparent 35%),
+              radial-gradient(circle at 85% 20%, rgba(0, 198, 255, 0.25), transparent 35%),
+              radial-gradient(circle at 50% 80%, rgba(255, 0, 127, 0.2), transparent 35%);
+  background-color: var(--bg-dark);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* iOS Glassmorphic Cards */
+.card, .bg-glass {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--blur-heavy) !important;
+  -webkit-backdrop-filter: var(--blur-heavy) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 20px !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--glass-shadow) !important;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.card-body {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.bg-light, .bg-white {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Dedicated Glass Modal */
+.modal-glass {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--blur-heavy) !important;
+  -webkit-backdrop-filter: var(--blur-heavy) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 24px !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+
+/* Ensure text inside cards is legible */
+.card-title, .card-text, .card h1, .card h2, .card h3, .card h4, .card h5, .card p, .card span {
+  color: var(--text-primary) !important;
+}
+
+/* =========================================
+   COMPREHENSIVE DARK MODE TEXT & BORDER FIX
+   ========================================= */
+
+/* Kill ALL hardcoded dark Bootstrap colors */
+.text-dark, .text-black, .text-body {
+  color: var(--text-primary) !important;
+}
+
+/* Force all text white on dark bg */
+.card *, .modal-glass *, .bg-glass * {
+  color: var(--text-primary);
+}
+
+/* Accent highlight for links and text-primary elements */
+.card a, .modal-glass a, .bg-glass a, 
+a.text-primary, .text-primary, a {
+  color: #38bdf8 !important;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+.card a:hover, .modal-glass a:hover, .bg-glass a:hover,
+a.text-primary:hover, a:hover {
+  color: #7dd3fc !important;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+/* Glassmorphic forms, inputs, and dropdown selections */
+.form-control, .form-select, textarea.form-control {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
+  transition: all 0.2s ease;
+}
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+.form-control:focus, .form-select:focus, textarea.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(99, 102, 241, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+  color: #ffffff !important;
+}
+option {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+
+/* Glassmorphic Navbar Override */
+.bg-glass-navbar {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(16px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.navbar-brand, .navbar-brand * {
+  color: #ffffff !important;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand i {
+  color: #8b5cf6 !important; /* Glowing Purple Rocket logo */
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+.nav-link, .nav-link * {
+  color: #cbd5e1 !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link *:hover {
+  color: #38bdf8 !important;
+}
+
+.dropdown-toggle {
+  color: #cbd5e1 !important;
+}
+
+.dropdown-toggle:hover {
+  color: #38bdf8 !important;
+}
+
+/* Fix mobile hamburger toggler icon */
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  padding: 6px 10px !important;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1) brightness(2) !important;
+}
+
+/* Fix Bootstrap dropdown menus going white */
+.dropdown-menu {
+  background: rgba(15, 20, 40, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 14px !important;
+  padding: 8px !important;
+}
+.dropdown-item {
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+}
+.dropdown-item:hover {
+  background: rgba(255,255,255,0.08) !important;
+  color: #fff !important;
+}
+.dropdown-divider {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Fix all modal internals */
+.modal-glass .modal-header,
+.modal-glass .modal-body,
+.modal-glass .modal-footer {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+}
+.modal-glass .modal-header .btn-close {
+  filter: invert(1) brightness(2) !important;
+}
+
+/* Remove ALL Bootstrap white/grey borders from cards and lists */
+.list-group-item {
+  background: transparent !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  color: var(--text-primary) !important;
+}
+.border-secondary {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Fix alert boxes */
+.alert {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: var(--text-primary) !important;
+  border-radius: 12px !important;
+}
+
+/* Fix Badge/Pills */
+.badge.bg-light, .badge.bg-secondary {
+  background: rgba(255,255,255,0.1) !important;
+  color: #fff !important;
+}
+
+/* Fix icon colors that show as dark */
+.fa-solid, .fa-regular, .fa-brands {
+  color: inherit;
+}
+
+/* Custom modal backdrop for glass effect */
+.glass-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* Beautiful Gradients for Headings */
+.text-gradient {
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, #7dd3fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+h1, .navbar-brand {
+  background: linear-gradient(135deg, #ffffff 30%, #a5f3fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Next-Gen Buttons */
+.btn {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  padding: 12px 28px !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.02em !important;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-primary, button[class*="btn-primary"] {
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3) !important;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, #6366f1 0%, #0ea5e9 100%);
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:hover, button[class*="btn-primary"]:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5) !important;
+  color: #fff !important;
+}
+
+.btn-light, .btn-outline-light {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: blur(10px);
+}
+
+.btn-light:hover, .btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Modern Form Inputs */
+.form-control, input, select, textarea {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  border-radius: 10px !important;
+  padding: 14px 18px !important;
+  font-size: 0.95rem !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(5px);
+}
+
+.form-control:focus, input:focus, select:focus, textarea:focus {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted) !important;
+}
+
+.form-label, label {
+  color: var(--text-secondary) !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Clean Header Navbar */
+.navbar, .bg-body-tertiary {
+  background: rgba(3, 7, 18, 0.7) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  padding: 15px 0 !important;
+}
+
+.nav-link {
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #4f46e5, #0ea5e9);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #ffffff !important;
+}
+
+/* Fixing structural bleeds */
+#lside, #rside, #scroller {
+  background: transparent !important;
+  border: none !important;
+}
+
+#lside, #rside {
+  background: rgba(15, 23, 42, 0.3) !important;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  margin: 10px;
+}
+
+/* Premium Dark Tables */
+.table {
+  background: rgba(15, 23, 42, 0.4) !important;
+  color: var(--text-primary) !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(10px);
+}
+
+.table th {
+  background-color: rgba(3, 7, 18, 0.6) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 18px !important;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.table td {
+  background-color: transparent !important;
+  color: var(--text-secondary) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  padding: 16px !important;
+  vertical-align: middle !important;
+}
+
+.table-hover tbody tr {
+  transition: all 0.2s ease;
+}
+
+.table-hover tbody tr:hover td {
+  background-color: rgba(99, 102, 241, 0.1) !important;
+  color: #ffffff !important;
+}
+
+/* Text styles */
+p, span, .text-muted {
+  color: var(--text-secondary) !important;
+  line-height: 1.6;
+}
+
+strong, b, .text-white {
+  color: #ffffff !important;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.badge-primary {
+  background: rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+/* Animation utilities */
+.fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Action Button Animations */
+.action-btn {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.action-btn:active {
+  transform: scale(0.85) !important;
+}
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+.action-btn i {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.action-btn:hover i {
+  transform: scale(1.25);
 }

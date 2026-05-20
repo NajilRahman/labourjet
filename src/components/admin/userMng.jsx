@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { deleteData } from '../../apiServices/apiServices';
+import toast from 'react-hot-toast';
 
 function UserMng({data,setRender}) {
 
@@ -8,7 +9,7 @@ function UserMng({data,setRender}) {
       <h1 className='text-center mb-5'>User Management</h1>
 
 
-      <table className='table table-responsive table-light table-hover'>
+      <table className='table table-responsive table-hover'>
         <thead>
             <tr>
             <th>User Name</th>

@@ -1,9 +1,9 @@
-import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Route ,Routes} from 'react-router-dom'
+import './bootstrap.min.css'
+import './App.css'
+import { Route, Routes } from 'react-router-dom'
 import Landing from './pages/landing'
 import Login from './pages/Login'
-import './bootstrap.min.css'
 import UserRegister from './pages/UserRegister'
 import EmployeeRegister from './pages/EmployeeRegister'
 import LandingHome from './pages/LandingHome'
@@ -14,8 +14,7 @@ import AdminHome from './pages/AdminHome'
 function App() {
 
   return (
-    <>
- 
+    <div className="App">
         <Routes>
           <Route path='/' element={<Landing/>}/>
           <Route path='/Login' element={<Login/>}/>
@@ -25,14 +24,10 @@ function App() {
           <Route path='/Message/:id' element={<MessageDash/>}/>
           <Route path='/user/:id' element={<UserProfile/>}/>
           <Route path='/adminpanel' element={<AdminHome/>}/>
-
-
-
-          <Route path='*' element={<h1>Page Not Found 404 !<h1/></h1>}/>
-
+          <Route path='*' element={<h1>Page Not Found 404 !</h1>}/>
         </Routes>
         <Toaster/>
-    </>
+    </div>
   )
 }
 
