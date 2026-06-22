@@ -10,7 +10,7 @@ import SelfPaymentMessage from './selfPaymentMessage';
 import OtherPaymentMessage from './OtherPaymentMessage';
 import Loading from './spinner';
 
-const ioPort = import.meta.env.VITE_SOCKET_URL || `http://localhost:3000`;
+const ioPort = import.meta.env.VITE_SOCKET_URL || 'https://labourjetbackend-zcymk750.b4a.run/';
 let socket;
 
 function ActiveChatView({ chatId, viewerid, onBack }) {

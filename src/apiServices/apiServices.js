@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_URL || 'https://labourjetapi.stocksigo.com/'
+const baseURL = import.meta.env.VITE_API_URL || 'https://labourjetbackend-zcymk750.b4a.run/'
 
 export const postData=(path,data)=>axios.post(`${baseURL}${path}`,data)
 

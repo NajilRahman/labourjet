@@ -13,7 +13,7 @@ import SelfPaymentMessage from '../components/selfPaymentMessage';
 import OtherPaymentMessage from '../components/OtherPaymentMessage';
 import Loading from '../components/spinner';
 
-const ioPort = import.meta.env.VITE_SOCKET_URL || `http://localhost:3000`;
+const ioPort = import.meta.env.VITE_SOCKET_URL || 'https://labourjetbackend-zcymk750.b4a.run/';
 let socket;
 
 function MessageDash() {

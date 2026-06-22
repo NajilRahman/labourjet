@@ -13,7 +13,7 @@ const WorkCard = ({ workData, render }) => {
     const [status, setStatus] = useState(workData.status);
 
     // socket for realtime work status updates
-    const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000');
+    const socket = io(import.meta.env.VITE_SOCKET_URL || 'https://labourjetbackend-zcymk750.b4a.run/');
     useEffect(() => {
         // join the chat room associated with this work item
         if (workData.chatid) socket.emit('joinChat', workData.chatid);
