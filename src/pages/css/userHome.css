@@ -36,20 +36,20 @@
 
 /* Glowing shadow active items */
 .shadow-glow {
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4) !important;
+  box-shadow: 0 0 15px rgba(110, 140, 183, 0.25) !important;
 }
 
 @keyframes pulse-glow {
   0% {
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 0 0 rgba(110, 140, 183, 0.35);
     transform: scale(1);
   }
   70% {
-    box-shadow: 0 0 0 15px rgba(56, 189, 248, 0);
+    box-shadow: 0 0 0 15px rgba(110, 140, 183, 0);
     transform: scale(1.02);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+    box-shadow: 0 0 0 0 rgba(110, 140, 183, 0);
     transform: scale(1);
   }
 }

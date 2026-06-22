@@ -86,8 +86,8 @@ function UserProfile() {
               <Col md={4} className="text-center text-md-start">
                 <div className="d-flex flex-column align-items-center">
                   <img
-                    className="rounded-circle border border-3 border-primary mb-3 shadow-lg"
-                    style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                    className="rounded-circle mb-3 shadow-lg"
+                    style={{ width: '150px', height: '150px', objectFit: 'cover', border: '3px solid rgba(110, 140, 183, 0.6)' }}
                     src={userData?.imgUrl || defaultAvatar}
                     alt={userData?.userName}
                   />
@@ -171,8 +171,8 @@ function UserProfile() {
                       className="btn flex-grow-1 fw-semibold py-2"
                       style={{
                         minWidth: '140px',
-                        background: 'linear-gradient(135deg, #4f46e5, #3b82f6)',
-                        color: '#fff',
+                        background: 'linear-gradient(135deg, #2e4263, #6e8cb7)',
+                        color: '#f2f4f7',
                         border: 'none',
                         borderRadius: '10px',
                         transition: 'all 0.2s ease'
@@ -186,9 +186,9 @@ function UserProfile() {
                       className="btn flex-grow-1 fw-semibold py-2"
                       style={{
                         minWidth: '140px',
-                        background: 'rgba(255, 255, 255, 0.08)',
-                        color: '#fff',
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        background: 'rgba(242, 244, 247, 0.08)',
+                        color: '#f2f4f7',
+                        border: '1px solid rgba(242, 244, 247, 0.15)',
                         borderRadius: '10px',
                         transition: 'all 0.2s ease'
                       }}
@@ -202,9 +202,9 @@ function UserProfile() {
                     className="btn flex-grow-1 fw-semibold py-2"
                     style={{
                       minWidth: '140px',
-                      background: 'linear-gradient(135deg, #10b981, #059669)',
-                      color: '#fff',
-                      border: 'none',
+                      background: 'rgba(242, 244, 247, 0.08)',
+                      color: '#f2f4f7',
+                      border: '1px solid rgba(242, 244, 247, 0.15)',
                       borderRadius: '10px',
                       transition: 'all 0.2s ease'
                     }}

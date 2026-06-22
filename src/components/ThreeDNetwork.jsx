@@ -19,7 +19,7 @@ const ThreeDNetwork = () => {
 
         // 3D Point class
         class Point3D {
-            constructor(x, y, z, color = '#3b82f6') {
+            constructor(x, y, z, color = '#ffffff') {
                 this.x = x;
                 this.y = y;
                 this.z = z;
@@ -40,20 +40,20 @@ const ThreeDNetwork = () => {
             const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
             const z = sphereRadius * Math.cos(phi);
             
-            // Refined tech blue and cyan nodes
-            const color = Math.random() > 0.45 ? '#3b82f6' : '#06b6d4';
+            // Slate blue and sage green points
+            const color = Math.random() > 0.45 ? '#6e8cb7' : '#81b29a';
             points.push(new Point3D(x, y, z, color));
         }
 
-        // Generate central Jet points using modern tech palette
+        // Generate central Jet points using Luminous Clarity palette
         const jetPoints = [
-            new Point3D(0, 0, 75, '#3b82f6'),
-            new Point3D(-55, 0, -20, '#06b6d4'),
-            new Point3D(55, 0, -20, '#06b6d4'),
-            new Point3D(0, 20, -45, '#10b981'),
-            new Point3D(0, -10, 15, '#ffffff'),
-            new Point3D(-10, 4, -12, '#3b82f6'),
-            new Point3D(10, 4, -12, '#3b82f6')
+            new Point3D(0, 0, 75, '#2e4263'),
+            new Point3D(-55, 0, -20, '#6e8cb7'),
+            new Point3D(55, 0, -20, '#6e8cb7'),
+            new Point3D(0, 20, -45, '#81b29a'),
+            new Point3D(0, -10, 15, '#f2f4f7'),
+            new Point3D(-10, 4, -12, '#2e4263'),
+            new Point3D(10, 4, -12, '#2e4263')
         ];
 
         const jetConnections = [
@@ -162,12 +162,12 @@ const ThreeDNetwork = () => {
             });
 
             if (closestNode) {
-                // Inspected node found! Draw glowing radar indicator around it (refined teal)
+                // Inspected node found! Draw glowing radar indicator around it (sage green)
                 ctx.beginPath();
                 ctx.arc(closestNode.x, closestNode.y, closestNode.size + 8, 0, Math.PI * 2);
-                ctx.strokeStyle = '#10b981';
+                ctx.strokeStyle = '#81b29a';
                 ctx.lineWidth = 1;
-                ctx.shadowColor = '#10b981';
+                ctx.shadowColor = '#81b29a';
                 ctx.shadowBlur = 8;
                 ctx.stroke();
                 ctx.shadowBlur = 0;
@@ -183,7 +183,7 @@ const ThreeDNetwork = () => {
 
                     if (dist < 80) {
                         const alpha = (1 - dist / 80) * 0.12;
-                        ctx.strokeStyle = `rgba(59, 130, 246, ${alpha})`;
+                        ctx.strokeStyle = `rgba(110, 140, 183, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(projectedPoints[i].x, projectedPoints[i].y);
                         ctx.lineTo(projectedPoints[j].x, projectedPoints[j].y);
@@ -247,8 +247,8 @@ const ThreeDNetwork = () => {
     }, []);
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '420px', overflow: 'hidden', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
-            <canvas ref={canvasRef} style={{ display: 'block', background: 'radial-gradient(circle at center, #0f172a 0%, #070a13 100%)' }} />
+        <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '420px', overflow: 'hidden', borderRadius: '12px', border: '1px solid var(--border-glass)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
+            <canvas ref={canvasRef} style={{ display: 'block', background: 'radial-gradient(circle at center, #111622 0%, #0b0e14 100%)' }} />
         </div>
     );
 };

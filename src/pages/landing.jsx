@@ -32,7 +32,7 @@ function Landing() {
           <Row className='d-flex align-items-center justify-content-between my-4'>
             <Col lg={6} md={12} className='text-start mb-4 mb-lg-0'>
               <h1 className='display-4 fw-bold mb-3' style={{ letterSpacing: '-0.03em', lineHeight: '1.15' }}>
-                The Next-Gen <span style={{ textShadow: '0 0 15px rgba(0, 242, 254, 0.3)' }}>Talent Network</span>
+                The Next-Gen <span style={{ textShadow: '0 0 15px rgba(110, 140, 183, 0.35)' }}>Talent Network</span>
               </h1>
               <p className='lead mb-4' style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: '1.6' }}>
                 LabourJet connects freelance specialists and companies inside a decentralized, high-speed 3D network. Tap into automated matches, secure contracts, and real-time collaboration.

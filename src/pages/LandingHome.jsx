@@ -85,7 +85,7 @@ function LandingHome() {
               <div className={`d-flex align-items-center mb-4 gap-2 ${isSidebarCollapsed ? 'justify-content-center' : 'justify-content-between'}`}>
                 {!isSidebarCollapsed && (
                   <div className="d-flex align-items-center gap-2">
-                    <i className="fa-solid fa-rocket fa-xl text-info animate-bounce" style={{ color: '#38bdf8' }}></i>
+                    <i className="fa-solid fa-rocket fa-xl animate-bounce" style={{ color: '#81b29a', textShadow: '0 0 10px rgba(129, 178, 154, 0.4)' }}></i>
                     <h4 className="mb-0 brand-text text-gradient fw-bold" style={{ fontSize: '1.25rem' }}>LabourJet</h4>
                   </div>
                 )}
@@ -99,15 +99,15 @@ function LandingHome() {
                     border: '1px solid rgba(255,255,255,0.12)',
                     color: '#fff',
                     transition: 'all 0.25s ease',
-                    boxShadow: '0 0 10px rgba(56, 189, 248, 0.15)'
+                    boxShadow: '0 0 10px rgba(255, 255, 255, 0.08)'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)';
-                    e.currentTarget.style.boxShadow = '0 0 15px rgba(56, 189, 248, 0.4)';
+                    e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.25)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)';
-                    e.currentTarget.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.15)';
+                    e.currentTarget.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.08)';
                   }}
                   title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
                 >
@@ -129,7 +129,7 @@ function LandingHome() {
                     src={loginedUser.imgUrl || defaultAvatar}
                     alt="Avatar"
                     className="rounded-circle mb-2 shadow"
-                    style={{ width: '64px', height: '64px', objectFit: 'cover', border: '2.5px solid rgba(56,189,248,0.6)' }}
+                    style={{ width: '64px', height: '64px', objectFit: 'cover', border: '2.5px solid rgba(110, 140, 183, 0.6)' }}
                   />
                   <h6 className="fw-bold mb-1 text-white text-truncate w-100" style={{ fontSize: '0.9rem' }}>
                     {loginedUser.userName || 'Specialist'}
@@ -138,8 +138,9 @@ function LandingHome() {
                     className="badge mb-2 text-capitalize text-info" 
                     style={{ 
                       fontSize: '0.7rem', 
-                      background: 'rgba(56,189,248,0.1)',
-                      border: '1px solid rgba(56,189,248,0.2)' 
+                      background: 'rgba(110, 140, 183, 0.1)',
+                      border: '1px solid rgba(110, 140, 183, 0.2)',
+                      color: '#a1b0cb'
                     }}
                   >
                     {loginedUser.userType || 'member'}
@@ -159,9 +160,9 @@ function LandingHome() {
                   <div 
                     className="position-relative p-1 rounded-circle shadow" 
                     style={{
-                      background: 'linear-gradient(45deg, #0284c7, #10b981)',
+                      background: 'linear-gradient(45deg, #2e4263, #6e8cb7)',
                       cursor: 'pointer',
-                      boxShadow: '0 0 12px rgba(56,189,248,0.4)',
+                      boxShadow: '0 0 12px rgba(110, 140, 183, 0.3)',
                       transition: 'transform 0.25s ease'
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.15)'}
@@ -173,7 +174,7 @@ function LandingHome() {
                       src={loginedUser.imgUrl || defaultAvatar}
                       alt="Avatar"
                       className="rounded-circle"
-                      style={{ width: '38px', height: '38px', objectFit: 'cover', border: '2px solid #0f172a' }}
+                      style={{ width: '38px', height: '38px', objectFit: 'cover', border: '2px solid #111622' }}
                     />
                   </div>
                 </div>
